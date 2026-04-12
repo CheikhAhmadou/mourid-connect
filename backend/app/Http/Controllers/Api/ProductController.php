@@ -19,6 +19,18 @@ class ProductController extends Controller
 {
     public function __construct(private ImageService $imageService) {}
 
+    /**
+     * Liste des produits
+     *
+     * Retourne la liste paginée des produits actifs avec filtres optionnels.
+     *
+     * @queryParam page int Numéro de page. Example: 1
+     * @queryParam per_page int Nombre de résultats par page (max 100). Example: 24
+     * @queryParam search string Recherche par nom. Example: boubou
+     * @queryParam category int ID d'une sous-catégorie. Example: 3
+     * @queryParam parent_category int ID d'une catégorie parente. Example: 1
+     * @queryParam featured bool Filtrer les produits en avant. Example: 1
+     */
     public function index(Request $request): AnonymousResourceCollection
     {
         $query = Product::active()

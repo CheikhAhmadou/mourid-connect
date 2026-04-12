@@ -8,6 +8,9 @@ php artisan migrate --force || echo "Migration failed, continuing..."
 echo "==> Seeding database..."
 php artisan db:seed --force || echo "Seeding failed, continuing..."
 
+echo "==> Generating API docs..."
+php artisan scribe:generate || true
+
 echo "==> Caching config..."
 php artisan config:cache || true
 php artisan route:cache || true
