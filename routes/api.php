@@ -15,41 +15,49 @@ Route::prefix('auth')->group(function () {
 });
 
 // ── Public endpoints
-Route::get('categories',          [CategoryController::class, 'index']);
+Route::get('categories',            [CategoryController::class, 'index']);
 Route::get('categories/{category}', [CategoryController::class, 'show']);
 
-Route::get('shops',               [ShopController::class, 'index']);
-Route::get('shops/{shop}',        [ShopController::class, 'show']);
+Route::get('shops',          [ShopController::class, 'index']);
+Route::get('shops/{shop}',   [ShopController::class, 'show']);
 
-Route::get('products',            [ProductController::class, 'index']);
-Route::get('products/{product}',  [ProductController::class, 'show']);
+Route::get('products',           [ProductController::class, 'index']);
+Route::get('products/{product}', [ProductController::class, 'show']);
 
 Route::get('products/{product}/reviews', [ReviewController::class, 'index']);
 
-// ── Authenticated endpoints
+// ── Authentifié
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get('auth/me',     [AuthController::class, 'me']);
+    Route::get('auth/me',      [AuthController::class, 'me']);
     Route::post('auth/logout', [AuthController::class, 'logout']);
 
-    // Shops
-    Route::post('shops',               [ShopController::class, 'store']);
-    Route::put('shops/{shop}',         [ShopController::class, 'update']);
-    Route::delete('shops/{shop}',      [ShopController::class, 'destroy']);
+    // Reviews (tout utilisateur connecté)
+    Route::post('products/{product}/reviews', [ReviewController::class, 'store']);
+    Route::delete('reviews/{review}',         [ReviewController::class, 'destroy']);
 
-    // Products
-    Route::post('products',            [ProductController::class, 'store']);
-    Route::put('products/{product}',   [ProductController::class, 'update']);
-    Route::delete('products/{product}', [ProductController::class, 'destroy']);
+    // ── Vendeurs uniquement
+    Route::middleware('role:vendor|admin')->group(function () {
 
-    // Reviews
-    Route::post('products/{product}/reviews',    [ReviewController::class, 'store']);
-    Route::delete('reviews/{review}',            [ReviewController::class, 'destroy']);
+        Route::post('shops',          [ShopController::class, 'store']);
+        Route::put('shops/{shop}',    [ShopController::class, 'update']);
+        Route::delete('shops/{shop}', [ShopController::class, 'destroy']);
 
-    // Vendor dashboard
-    Route::prefix('vendor')->group(function () {
-        Route::get('shops',    [VendorController::class, 'shops']);
-        Route::get('products', [VendorController::class, 'products']);
-        Route::get('stats',    [VendorController::class, 'stats']);
+        Route::post('products',            [ProductController::class, 'store']);
+        Route::put('products/{product}',   [ProductController::class, 'update']);
+        Route::delete('products/{product}', [ProductController::class, 'destroy']);
+
+        Route::prefix('vendor')->group(function () {
+            Route::get('shops',    [VendorController::class, 'shops']);
+            Route::get('products', [VendorController::class, 'products']);
+            Route::get('stats',    [VendorController::class, 'stats']);
+        });
+    });
+
+    // ── Admin uniquement
+    Route::middleware('role:admin')->prefix('admin')->group(function () {
+        Route::patch('shops/{shop}/verify',       [ShopController::class, 'verify']);
+        Route::get('users',                       [\App\Http\Controllers\Api\AdminController::class, 'users']);
+        Route::patch('users/{user}/role',         [\App\Http\Controllers\Api\AdminController::class, 'assignRole']);
     });
 });

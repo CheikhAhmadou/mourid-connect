@@ -79,6 +79,13 @@ class ShopController extends Controller
         return new ShopResource($shop->load('user'));
     }
 
+    public function verify(Shop $shop): ShopResource
+    {
+        $shop->update(['is_verified' => ! $shop->is_verified]);
+
+        return new ShopResource($shop->load('user'));
+    }
+
     public function destroy(Shop $shop): JsonResponse
     {
         $this->authorize('delete', $shop);
