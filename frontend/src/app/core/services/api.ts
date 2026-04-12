@@ -5,7 +5,7 @@ import { Category } from '../models/category';
 import { Shop, PaginatedShops } from '../models/shop';
 import { Product, PaginatedProducts } from '../models/product';
 
-const API = 'http://localhost:8080/api';
+const API = 'https://mourid-connect-production.up.railway.app/api';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
