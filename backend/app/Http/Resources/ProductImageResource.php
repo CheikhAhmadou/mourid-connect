@@ -11,8 +11,10 @@ class ProductImageResource extends JsonResource
     {
         return [
             'id'            => $this->id,
-            'url'           => asset('storage/'.$this->url),
-            'url_thumbnail' => $this->url_thumbnail ? asset('storage/'.$this->url_thumbnail) : null,
+            'url'           => str_starts_with($this->url, 'http') ? $this->url : asset('storage/'.$this->url),
+            'url_thumbnail' => $this->url_thumbnail
+                ? (str_starts_with($this->url_thumbnail, 'http') ? $this->url_thumbnail : asset('storage/'.$this->url_thumbnail))
+                : null,
             'is_main'       => $this->is_main,
             'order'         => $this->order,
             'alt_text'      => $this->alt_text,

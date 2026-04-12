@@ -1,0 +1,8 @@
+footer {
+  background: var(--dark); padding: 48px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--white); font-weight: 700; span { color: var(--gold); } }
+.footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+.footer-links { display: flex; gap: 24px; a { font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; &:hover { color: var(--gold); } } }

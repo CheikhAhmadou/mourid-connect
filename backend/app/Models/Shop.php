@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Shop extends Model
 {
     use HasFactory;
+
+    public function getRouteKeyName(): string { return 'slug'; }
+
     protected $fillable = [
         'user_id', 'name', 'slug', 'description',
         'logo', 'cover_image',

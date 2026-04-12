@@ -19,9 +19,7 @@
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('slug:', d['data']['slug']\\); print\\('name:', d['data']['name']\\); print\\('main_image:', d['data'].get\\('main_image'\\)\\)\")",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); p=d['data']; print\\('OK - name:', p['name'], '| shop:', p.get\\('shop',{}\\).get\\('name'\\), '| images:', len\\(p.get\\('images',[]\\)\\)\\)\")",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); p=d['data']; print\\('✅ name:', p['name']\\); print\\('   shop:', p.get\\('shop',{}\\).get\\('name'\\)\\); print\\('   phone:', p.get\\('shop',{}\\).get\\('phone'\\)\\); print\\('   whatsapp:', p.get\\('shop',{}\\).get\\('whatsapp'\\)\\); print\\('   images:', len\\(p.get\\('images',[]\\)\\)\\)\")",
-      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); s=d['data']; print\\('✅ shop:', s['name'], '| verified:', s['is_verified']\\)\")",
-      "Bash(grep -E \"vendor|node_modules|\\\\.env$\")",
-      "Bash(grep -E \"^\\\\.gitignore$\")"
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); s=d['data']; print\\('✅ shop:', s['name'], '| verified:', s['is_verified']\\)\")"
     ]
   }
 }

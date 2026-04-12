@@ -22,13 +22,17 @@ class ProductController extends Controller
     public function index(Request $request): AnonymousResourceCollection
     {
         $query = Product::active()
-            ->with(['shop', 'category', 'mainImage'])
+            ->with(['shop', 'category.parent', 'mainImage'])
             ->when($request->category, fn ($q, $cat) => $q->where('category_id', $cat))
+            ->when($request->parent_category, fn ($q, $parentId) => $q->whereHas('category', fn ($c) => $c->where('parent_id', $parentId)))
             ->when($request->shop, fn ($q, $shop) => $q->where('shop_id', $shop))
             ->when($request->search, fn ($q, $s) => $q->where('name', 'like', "%{$s}%"))
             ->when($request->featured, fn ($q) => $q->featured());
 
-        return ProductResource::collection($query->latest()->paginate(24));
+        $perPage = (int) ($request->per_page ?? 24);
+        $perPage = min($perPage, 100);
+
+        return ProductResource::collection($query->latest()->paginate($perPage));
     }
 
     public function store(StoreProductRequest $request): JsonResponse
@@ -69,7 +73,7 @@ class ProductController extends Controller
     public function show(Product $product): ProductResource
     {
         $product->incrementViews();
-        $product->load(['shop.user', 'category', 'images', 'reviews.user']);
+        $product->load(['shop.user', 'category.parent', 'images', 'mainImage', 'reviews.user']);
 
         return new ProductResource($product);
     }

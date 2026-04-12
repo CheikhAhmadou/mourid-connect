@@ -1,0 +1,24 @@
+<nav>
+  <div class="nav-logo" routerLink="/">
+    <div class="nav-logo-icon">🕌</div>
+    <div class="nav-logo-text">Mourid<span>Connect</span></div>
+  </div>
+
+  <ul class="nav-links">
+    <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Accueil</a></li>
+    <li><a routerLink="/souk" routerLinkActive="active">Souk</a></li>
+    <li><a href="#">Dahira</a></li>
+    <li><a href="#">Académie</a></li>
+    <li><a href="#">Kids</a></li>
+  </ul>
+
+  <div class="nav-cta">
+    @if (auth.isLoggedIn()) {
+      <span class="nav-user">{{ auth.currentUser()?.name }}</span>
+      <button class="btn-outline" (click)="auth.logout().subscribe()">Déconnexion</button>
+    } @else {
+      <button class="btn-outline">Connexion</button>
+      <button class="btn-solid">S'inscrire</button>
+    }
+  </div>
+</nav>

@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Product extends Model
 {
     use HasFactory;
+
+    public function getRouteKeyName(): string { return 'slug'; }
+
     protected $fillable = [
         'shop_id', 'category_id', 'name', 'slug', 'description', 'specifications',
         'price', 'price_promo', 'unit',

@@ -1,0 +1,260 @@
+<div class="product-page">
+
+  @if (loading()) {
+    <div class="loading"><div class="spinner"></div></div>
+  }
+
+  @else if (product(); as p) {
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <a routerLink="/souk">Souk Mouride</a>
+      @if (p.category?.parent) {
+        <span>›</span>
+        <span>{{ p.category!.parent!.icon }} {{ p.category!.parent!.name }}</span>
+      }
+      <span>›</span>
+      <span class="current">{{ p.name }}</span>
+    </div>
+
+    <div class="product-layout">
+
+      <!-- ══ COLONNE GAUCHE : galerie + description + avis ══ -->
+      <div class="product-left">
+
+        <!-- Galerie -->
+        <div class="gallery">
+          <div class="main-image">
+            @if (selectedImage()) {
+              <img [src]="selectedImage()!.url" [alt]="p.name">
+            } @else {
+              <div class="no-image">🛍️</div>
+            }
+            @if (p.is_featured) {
+              <div class="featured-ribbon">⭐ En avant</div>
+            }
+          </div>
+          @if (p.images && p.images.length > 1) {
+            <div class="thumbnails">
+              @for (img of p.images; track img.id) {
+                <div class="thumb" [class.active]="selectedImage()?.id === img.id" (click)="selectImage(img)">
+                  <img [src]="img.url_thumbnail ?? img.url" [alt]="p.name">
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Description -->
+        @if (p.description) {
+          <div class="section-block">
+            <h3 class="block-title">Description</h3>
+            <p class="description-text">{{ p.description }}</p>
+          </div>
+        }
+
+        <!-- Infos livraison -->
+        <div class="section-block">
+          <h3 class="block-title">Livraison & disponibilité</h3>
+          <div class="delivery-grid">
+            <div class="delivery-item">
+              <span class="d-icon">🚚</span>
+              <div>
+                <div class="d-label">Livraison</div>
+                <div class="d-val">{{ p.delivery_free ? 'Gratuite' : 'Payante' }} · {{ p.delivery_delay }}</div>
+              </div>
+            </div>
+            @if (p.delivery_zones.length) {
+              <div class="delivery-item">
+                <span class="d-icon">🌍</span>
+                <div>
+                  <div class="d-label">Zones desservies</div>
+                  <div class="d-val">{{ p.delivery_zones.join(', ') }}</div>
+                </div>
+              </div>
+            }
+            @if (p.stock > 0) {
+              <div class="delivery-item">
+                <span class="d-icon">📦</span>
+                <div>
+                  <div class="d-label">Stock</div>
+                  <div class="d-val">{{ p.stock }} disponibles · Commande min. {{ p.min_order }}</div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Avis -->
+        @if (p.reviews && p.reviews.length > 0) {
+          <div class="section-block">
+            <h3 class="block-title">
+              Avis communautaires
+              <span class="reviews-badge">{{ p.reviews.length }}</span>
+            </h3>
+            <div class="rating-summary">
+              <span class="big-rating">{{ p.average_rating }}</span>
+              <div>
+                <div class="stars-row">
+                  @for (s of stars(p.average_rating); track $index) {
+                    <span class="star">{{ s }}</span>
+                  }
+                </div>
+                <span class="reviews-total">{{ p.reviews.length }} avis</span>
+              </div>
+            </div>
+            <div class="reviews-list">
+              @for (review of p.reviews; track review.id) {
+                <div class="review-card">
+                  <div class="review-header">
+                    <div class="review-avatar">{{ review.user.name.charAt(0) }}</div>
+                    <div class="review-meta">
+                      <div class="review-author">{{ review.user.name }}</div>
+                      <div class="review-date">{{ review.created_at | slice:0:10 }}</div>
+                    </div>
+                    <div class="review-stars">
+                      @for (s of stars(review.rating); track $index) { {{ s }} }
+                    </div>
+                  </div>
+                  @if (review.comment) {
+                    <p class="review-text">{{ review.comment }}</p>
+                  }
+                  @if (review.is_verified_purchase) {
+                    <span class="verified-purchase">✅ Achat vérifié</span>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <!-- ══ COLONNE DROITE : infos produit + vendeur ══ -->
+      <div class="product-right">
+        <div class="sticky-sidebar">
+
+          <!-- Nom & tags -->
+          <div class="product-tags">
+            @if (p.category) {
+              <span class="tag-category">{{ p.category.icon }} {{ p.category.name }}</span>
+            }
+            @if (p.shop?.is_verified) {
+              <span class="tag-verified">✅ Vendeur vérifié</span>
+            }
+          </div>
+
+          <h1>{{ p.name }}</h1>
+
+          <!-- Prix -->
+          <div class="price-block">
+            @if (p.price_promo_eur) {
+              <div class="price-main">{{ p.price_promo_eur | number:'1.2-2' }} €</div>
+              <div class="price-secondary">
+                <span class="price-old">{{ p.price_eur | number:'1.2-2' }} €</span>
+                <span class="price-promo-pct">
+                  -{{ ((1 - p.price_promo_eur / p.price_eur) * 100) | number:'1.0-0' }}%
+                </span>
+              </div>
+              <div class="price-fcfa">{{ p.price_promo_fcfa | number:'1.0-0' }} FCFA</div>
+            } @else if (p.price_eur > 0) {
+              <div class="price-main">{{ p.price_eur | number:'1.2-2' }} €</div>
+              <div class="price-fcfa">{{ p.price_fcfa | number:'1.0-0' }} FCFA</div>
+            } @else {
+              <div class="price-main price-devis">Sur devis</div>
+            }
+            <div class="price-unit">par {{ p.unit }}</div>
+          </div>
+
+          <!-- Note -->
+          @if (p.average_rating > 0) {
+            <div class="rating-inline">
+              @for (s of stars(p.average_rating); track $index) {
+                <span class="star">{{ s }}</span>
+              }
+              <span class="rating-val">{{ p.average_rating }}/5</span>
+              <span class="reviews-count">({{ p.reviews?.length ?? 0 }} avis)</span>
+            </div>
+          }
+
+          <!-- ── Carte Vendeur / Boutique ── -->
+          <div class="vendor-card">
+            <div class="vendor-card-header">
+              <div class="vendor-avatar">
+                @if (p.shop?.logo) {
+                  <img [src]="p.shop!.logo" [alt]="p.shop!.name">
+                } @else {
+                  {{ p.shop?.name?.charAt(0) }}
+                }
+              </div>
+              <div class="vendor-info">
+                <div class="vendor-name">{{ p.shop?.name }}</div>
+                <div class="vendor-location">📍 {{ p.shop?.city }}, {{ p.shop?.country }}</div>
+                <div class="vendor-badges">
+                  @if (p.shop?.is_verified) {
+                    <span class="badge-verified">✅ Vérifié</span>
+                  }
+                  <span class="badge-level {{ p.shop?.level }}">{{ getLevelLabel(p.shop?.level) }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="vendor-contacts">
+              @if (p.shop?.whatsapp || p.shop?.phone) {
+                <button class="contact-btn whatsapp" (click)="whatsappContact(p)">
+                  <span class="contact-icon">💬</span>
+                  <span>WhatsApp</span>
+                </button>
+              }
+              @if (p.shop?.phone) {
+                <a class="contact-btn phone" [href]="'tel:' + p.shop!.phone">
+                  <span class="contact-icon">📞</span>
+                  <span>{{ p.shop!.phone }}</span>
+                </a>
+              }
+              @if (p.shop?.email) {
+                <a class="contact-btn email" [href]="'mailto:' + p.shop!.email">
+                  <span class="contact-icon">✉️</span>
+                  <span>{{ p.shop!.email }}</span>
+                </a>
+              }
+              @if (p.shop?.website) {
+                <a class="contact-btn website" [href]="p.shop!.website" target="_blank" rel="noopener">
+                  <span class="contact-icon">🌐</span>
+                  <span>Site web</span>
+                </a>
+              }
+            </div>
+
+            <a class="see-shop-btn" [routerLink]="['/souk/boutiques', p.shop?.slug]">
+              Voir la boutique complète →
+            </a>
+          </div>
+
+          <!-- Stats -->
+          <div class="product-stats">
+            <div class="stat-item">
+              <span class="stat-icon">👁️</span>
+              <div>
+                <div class="stat-val">{{ p.views_count }}</div>
+                <div class="stat-label">vues</div>
+              </div>
+            </div>
+            <div class="stat-item">
+              <span class="stat-icon">📞</span>
+              <div>
+                <div class="stat-val">{{ p.contacts_count }}</div>
+                <div class="stat-label">contacts</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  }
+
+</div>

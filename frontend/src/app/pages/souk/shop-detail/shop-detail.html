@@ -1,0 +1,96 @@
+<div class="shop-page">
+  @if (loading()) {
+    <div class="loading"><div class="spinner"></div></div>
+  } @else if (shop(); as s) {
+
+    <!-- Cover -->
+    <div class="shop-cover" [style.backgroundImage]="s.cover_image ? 'url(' + s.cover_image + ')' : 'none'">
+      <div class="shop-cover-overlay">
+        <div class="shop-header-content">
+          <div class="shop-logo">
+            @if (s.logo) {
+              <img [src]="s.logo" [alt]="s.name">
+            } @else {
+              {{ s.name.charAt(0) }}
+            }
+          </div>
+          <div>
+            <div class="shop-meta-tags">
+              @if (s.is_verified) { <span class="badge verified">✅ Vérifié</span> }
+              <span class="badge level">{{ getLevelLabel(s.level) }}</span>
+            </div>
+            <h1>{{ s.name }}</h1>
+            <div class="shop-location">📍 {{ s.city }}, {{ s.country }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="shop-body">
+      <div class="shop-layout">
+        <!-- Sidebar info -->
+        <aside class="shop-sidebar">
+          <div class="sidebar-card">
+            <h3>Contacter</h3>
+            @if (s.whatsapp || s.phone) {
+              <button class="btn-whatsapp" (click)="whatsappContact(s)">💬 WhatsApp</button>
+            }
+            @if (s.phone) {
+              <a class="btn-call" [href]="'tel:' + s.phone">📞 {{ s.phone }}</a>
+            }
+            @if (s.email) {
+              <a class="btn-email" [href]="'mailto:' + s.email">✉️ Email</a>
+            }
+            @if (s.website) {
+              <a class="btn-website" [href]="s.website" target="_blank">🌐 Site web</a>
+            }
+          </div>
+
+          <div class="sidebar-card stats">
+            <h3>Statistiques</h3>
+            <div class="stat-row"><span>👁️ Vues</span><strong>{{ s.views_count }}</strong></div>
+            <div class="stat-row"><span>📞 Contacts</span><strong>{{ s.contacts_count }}</strong></div>
+          </div>
+        </aside>
+
+        <!-- Main content -->
+        <main class="shop-main">
+          @if (s.description) {
+            <div class="shop-description">
+              <h2>À propos</h2>
+              <p>{{ s.description }}</p>
+            </div>
+          }
+
+          <div class="shop-products">
+            <h2>Produits & services</h2>
+            @if (s.products && s.products.length > 0) {
+              <div class="products-mini-grid">
+                @for (p of s.products; track p.id) {
+                  <div class="mini-card" [routerLink]="['/souk/produits', p.slug]">
+                    <div class="mini-img">
+                      @if (p.main_image) {
+                        <img [src]="p.main_image.url_thumbnail" [alt]="p.name">
+                      } @else {
+                        <span>🛍️</span>
+                      }
+                    </div>
+                    <div class="mini-info">
+                      <div class="mini-name">{{ p.name }}</div>
+                      <div class="mini-price">
+                        @if (p.price_eur > 0) { {{ p.price_eur | number:'1.2-2' }} € }
+                        @else { Sur devis }
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            } @else {
+              <p class="empty">Aucun produit pour l'instant.</p>
+            }
+          </div>
+        </main>
+      </div>
+    </div>
+  }
+</div>
