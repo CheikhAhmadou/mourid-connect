@@ -1,0 +1,10 @@
+node_modules
+package.json
+package-lock.json
+vite.config.js
+resources/js
+resources/css
+.env
+.git
+storage/logs
+tests
