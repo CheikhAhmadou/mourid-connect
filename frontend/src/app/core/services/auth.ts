@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { User, AuthResponse } from '../models/user';
 
-const API = 'http://localhost:8080/api';
+const API = 'https://mourid-connect-production.up.railway.app/api';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

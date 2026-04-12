@@ -50,4 +50,17 @@ export class ApiService {
   getProduct(slug: string): Observable<{ data: Product }> {
     return this.http.get<{ data: Product }>(`${API}/products/${slug}`);
   }
+
+  // ── Vendor
+  getMyShops(): Observable<{ data: Shop[] }> {
+    return this.http.get<{ data: Shop[] }>(`${API}/vendor/shops`);
+  }
+
+  createShop(data: FormData): Observable<{ data: Shop }> {
+    return this.http.post<{ data: Shop }>(`${API}/shops`, data);
+  }
+
+  createProduct(data: FormData): Observable<{ data: Product }> {
+    return this.http.post<{ data: Product }>(`${API}/products`, data);
+  }
 }

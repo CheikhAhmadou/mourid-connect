@@ -1,0 +1,63 @@
+.auth-page {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, var(--dark) 0%, #0f3526 60%, var(--green) 100%);
+  padding: 24px;
+}
+
+.auth-card {
+  background: var(--white); border-radius: 24px; padding: 48px 40px;
+  width: 100%; max-width: 460px; box-shadow: 0 32px 64px rgba(0,0,0,0.2);
+}
+
+.auth-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700;
+  color: var(--dark); cursor: pointer; margin-bottom: 28px;
+  span:first-child { font-size: 24px; }
+  span:last-child { color: var(--green); }
+}
+
+h1 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+.auth-subtitle { font-size: 14px; color: var(--gray); margin-bottom: 28px; }
+
+.auth-tabs {
+  display: flex; background: #F3F0E8; border-radius: 12px; padding: 4px; margin-bottom: 28px;
+  button {
+    flex: 1; padding: 10px; border: none; background: none; border-radius: 10px;
+    font-size: 14px; font-weight: 600; color: var(--gray); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+    &.active { background: var(--white); color: var(--green); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  }
+}
+
+.auth-error {
+  background: #FEE2E2; color: #DC2626; border-radius: 10px;
+  padding: 12px 16px; font-size: 13px; margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--dark); margin-bottom: 6px; }
+  input {
+    width: 100%; padding: 12px 16px; border: 1.5px solid #E0DDD4; border-radius: 10px;
+    font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--dark);
+    background: var(--white); outline: none; transition: border-color 0.2s; box-sizing: border-box;
+    &:focus { border-color: var(--green); }
+    &::placeholder { color: #B0A99A; }
+  }
+}
+
+.btn-submit {
+  width: 100%; padding: 14px; background: var(--green); color: white;
+  border: none; border-radius: 12px; font-size: 15px; font-weight: 700;
+  cursor: pointer; font-family: 'DM Sans', sans-serif; margin-top: 8px;
+  transition: all 0.2s;
+  &:hover:not(:disabled) { background: #0f3526; transform: translateY(-1px); }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+.auth-footer { font-size: 11px; color: var(--gray); text-align: center; margin-top: 20px; }
+
+@media (max-width: 480px) {
+  .auth-card { padding: 32px 24px; }
+}

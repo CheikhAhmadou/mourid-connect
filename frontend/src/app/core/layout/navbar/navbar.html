@@ -14,11 +14,13 @@
 
   <div class="nav-cta">
     @if (auth.isLoggedIn()) {
-      <span class="nav-user">{{ auth.currentUser()?.name }}</span>
-      <button class="btn-outline" (click)="auth.logout().subscribe()">Déconnexion</button>
+      <a class="nav-dashboard" routerLink="/dashboard">
+        <span class="nav-avatar">{{ auth.currentUser()?.name?.charAt(0) }}</span>
+        Mon espace
+      </a>
     } @else {
-      <button class="btn-outline">Connexion</button>
-      <button class="btn-solid">S'inscrire</button>
+      <a class="btn-outline" routerLink="/auth">Connexion</a>
+      <a class="btn-solid" routerLink="/auth">Vendre ici</a>
     }
   </div>
 </nav>
