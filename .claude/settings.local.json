@@ -4,7 +4,10 @@
       "Bash(php artisan:*)",
       "Bash(git add:*)",
       "Bash(git commit -m ':*)",
-      "Bash(composer show:*)"
+      "Bash(composer show:*)",
+      "Bash(curl:*)",
+      "Bash(disown)",
+      "Bash(python3 -m json.tool)"
     ]
   }
 }
