@@ -12,23 +12,35 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        $this->call([
-            RoleSeeder::class,
-            CategorySeeder::class,
-        ]);
+        // 1. Rôles & permissions
+        $this->call(RoleSeeder::class);
 
-        // Compte admin par défaut
+        // 2. Catégories (10 parents, 43 sous-catégories)
+        $this->call(CategorySeeder::class);
+
+        // 3. Comptes fixes
         $admin = User::factory()->create([
-            'name'  => 'Admin',
+            'name'  => 'Admin Souk Mouride',
             'email' => 'admin@souk-mouride.com',
         ]);
         $admin->assignRole('admin');
 
-        // Compte vendeur de test
         $vendor = User::factory()->create([
             'name'  => 'Vendeur Test',
             'email' => 'vendor@souk-mouride.com',
         ]);
         $vendor->assignRole('vendor');
+
+        // 4. 50 vendeurs
+        $this->call(UserSeeder::class);
+
+        // 5. 50 boutiques (liées aux vendeurs)
+        $this->call(ShopSeeder::class);
+
+        // 6. 50 produits + images
+        $this->call(ProductSeeder::class);
+
+        // 7. 50 avis
+        $this->call(ReviewSeeder::class);
     }
 }

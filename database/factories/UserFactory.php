@@ -12,30 +12,35 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
-    /**
-     * The current password being used by the factory.
-     */
     protected static ?string $password;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    private static array $firstNames = [
+        'Cheikh', 'Modou', 'Mamadou', 'Ibrahima', 'Oumar', 'Abdoulaye', 'Serigne',
+        'Moussa', 'Babacar', 'Saliou', 'Pape', 'Lamine', 'Assane', 'Mor', 'Bamba',
+        'Fatou', 'Ndéye', 'Mariama', 'Aminata', 'Aissatou', 'Sokhna', 'Khady',
+        'Rokhaya', 'Mame', 'Coumba', 'Dieynaba', 'Astou', 'Seynabou', 'Rama',
+    ];
+
+    private static array $lastNames = [
+        'Diallo', 'Ba', 'Ndiaye', 'Fall', 'Sy', 'Kane', 'Mbaye', 'Diop', 'Sarr',
+        'Toure', 'Sow', 'Diagne', 'Gueye', 'Diouf', 'Cissé', 'Tall', 'Faye',
+        'Mbacké', 'Thiam', 'Seck', 'Badji', 'Manga', 'Lo', 'Camara', 'Kouyaté',
+    ];
+
     public function definition(): array
     {
+        $first = fake()->randomElement(self::$firstNames);
+        $last  = fake()->randomElement(self::$lastNames);
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'name'               => "{$first} {$last}",
+            'email'              => Str::lower("{$first}.{$last}") . fake()->unique()->numberBetween(1, 999) . '@gmail.com',
+            'email_verified_at'  => now(),
+            'password'           => static::$password ??= Hash::make('password'),
+            'remember_token'     => Str::random(10),
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [
