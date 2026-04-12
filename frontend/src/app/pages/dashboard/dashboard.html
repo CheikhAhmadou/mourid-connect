@@ -182,7 +182,7 @@
               <label>Prix en FCFA *</label>
               <input type="number" [(ngModel)]="productPrice" name="price" min="0" required placeholder="Ex: 5000">
               @if (productPrice > 0) {
-                <span class="price-hint">≈ {{ productPrice / 655.957 | number:'1.2-2' }} €</span>
+                <span class="price-hint">≈ {{ currency.format(productPrice) }}</span>
               }
             </div>
             <div class="form-group">

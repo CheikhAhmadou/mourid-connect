@@ -102,11 +102,11 @@
                   </div>
                   <div class="product-footer">
                     <div class="product-price">
-                      @if (product.price_promo_eur) {
-                        <span class="price-promo">{{ product.price_promo_eur | number:'1.2-2' }} €</span>
-                        <span class="price-old">{{ product.price_eur | number:'1.2-2' }} €</span>
-                      } @else if (product.price_eur > 0) {
-                        {{ product.price_eur | number:'1.2-2' }} €
+                      @if (product.price_promo_fcfa) {
+                        <span class="price-promo">{{ currency.format(product.price_promo_fcfa) }}</span>
+                        <span class="price-old">{{ currency.format(product.price_fcfa) }}</span>
+                      } @else if (product.price_fcfa > 0) {
+                        {{ currency.format(product.price_fcfa) }}
                       } @else {
                         <span class="price-devis">Sur devis</span>
                       }

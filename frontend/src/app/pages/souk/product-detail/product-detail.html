@@ -150,18 +150,22 @@
 
           <!-- Prix -->
           <div class="price-block">
-            @if (p.price_promo_eur) {
-              <div class="price-main">{{ p.price_promo_eur | number:'1.2-2' }} €</div>
+            @if (p.price_promo_fcfa) {
+              <div class="price-main">{{ currency.format(p.price_promo_fcfa) }}</div>
               <div class="price-secondary">
-                <span class="price-old">{{ p.price_eur | number:'1.2-2' }} €</span>
+                <span class="price-old">{{ currency.format(p.price_fcfa) }}</span>
                 <span class="price-promo-pct">
-                  -{{ ((1 - p.price_promo_eur / p.price_eur) * 100) | number:'1.0-0' }}%
+                  -{{ ((1 - p.price_promo_fcfa / p.price_fcfa) * 100) | number:'1.0-0' }}%
                 </span>
               </div>
-              <div class="price-fcfa">{{ p.price_promo_fcfa | number:'1.0-0' }} FCFA</div>
-            } @else if (p.price_eur > 0) {
-              <div class="price-main">{{ p.price_eur | number:'1.2-2' }} €</div>
-              <div class="price-fcfa">{{ p.price_fcfa | number:'1.0-0' }} FCFA</div>
+              @if (!currency.isFcfaZone) {
+                <div class="price-fcfa">{{ p.price_promo_fcfa | number:'1.0-0' }} FCFA</div>
+              }
+            } @else if (p.price_fcfa > 0) {
+              <div class="price-main">{{ currency.format(p.price_fcfa) }}</div>
+              @if (!currency.isFcfaZone) {
+                <div class="price-fcfa">{{ p.price_fcfa | number:'1.0-0' }} FCFA</div>
+              }
             } @else {
               <div class="price-main price-devis">Sur devis</div>
             }

@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 import { ApiService } from '../../../core/services/api';
+import { CurrencyService } from '../../../core/services/currency';
 import { Product } from '../../../core/models/product';
 import { Category } from '../../../core/models/category';
 
@@ -19,6 +20,7 @@ export interface CategorySection {
 })
 export class SoukList implements OnInit {
   private api = inject(ApiService);
+  currency = inject(CurrencyService);
 
   // State
   parentCategories = signal<Category[]>([]);

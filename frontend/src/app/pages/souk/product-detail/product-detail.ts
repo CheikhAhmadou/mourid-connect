@@ -2,6 +2,7 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DecimalPipe, SlicePipe } from '@angular/common';
 import { ApiService } from '../../../core/services/api';
+import { CurrencyService } from '../../../core/services/currency';
 import { Product, ProductImage } from '../../../core/models/product';
 
 @Component({
@@ -13,6 +14,7 @@ import { Product, ProductImage } from '../../../core/models/product';
 export class ProductDetail implements OnInit {
   private api = inject(ApiService);
   private route = inject(ActivatedRoute);
+  currency = inject(CurrencyService);
 
   product = signal<Product | null>(null);
   selectedImage = signal<ProductImage | null>(null);

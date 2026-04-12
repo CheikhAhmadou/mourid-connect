@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 import { AuthService } from '../../core/services/auth';
 import { ApiService } from '../../core/services/api';
+import { CurrencyService } from '../../core/services/currency';
 import { Shop } from '../../core/models/shop';
 import { Category } from '../../core/models/category';
 import { Product } from '../../core/models/product';
@@ -20,6 +21,7 @@ export class Dashboard implements OnInit {
   auth = inject(AuthService);
   private api = inject(ApiService);
   private router = inject(Router);
+  currency = inject(CurrencyService);
 
   view = signal<View>('shops');
   shops = signal<Shop[]>([]);
