@@ -39,14 +39,38 @@ class ProfileController extends Controller
     // GET /api/members/map
     public function map(Request $request)
     {
-        $members = UserProfile::visibleOnMap()
+        $profiles = UserProfile::visibleOnMap()
             ->when($request->country, fn($q) => $q->byCountry($request->country))
             ->when($request->city,    fn($q) => $q->byCity($request->city))
             ->with('user:id,name,avatar')
-            ->select(['user_id', 'latitude', 'longitude', 'city', 'country', 'dahira_name', 'profession', 'is_available_help'])
             ->get();
 
-        return response()->json(['data' => $members]);
+        // Prérequête unique pour les follows de l'utilisateur connecté
+        $followingIds = [];
+        if (auth()->check()) {
+            $followingIds = \App\Models\Follow::where('follower_id', auth()->id())
+                ->pluck('following_id')
+                ->toArray();
+        }
+
+        $data = $profiles->map(fn($p) => [
+            'id'                => $p->user_id,
+            'name'              => $p->user->name,
+            'avatar'            => $p->user->avatar
+                                    ? asset('storage/' . $p->user->avatar)
+                                    : null,
+            'city'              => $p->city,
+            'country'           => $p->country,
+            'dahira_name'       => $p->dahira_name,
+            'profession'        => $p->profession,
+            'is_available_help' => (bool) $p->is_available_help,
+            'is_following'      => in_array($p->user_id, $followingIds),
+            'followers_count'   => 0,
+            'latitude'          => $p->latitude,
+            'longitude'         => $p->longitude,
+        ]);
+
+        return response()->json(['data' => $data]);
     }
 
     // GET /api/members/nearby
