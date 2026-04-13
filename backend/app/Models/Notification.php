@@ -13,18 +13,12 @@ class Notification extends Model
         'id',
         'user_id',
         'type',
-        'title',
-        'body',
         'data',
-        'is_read',
         'read_at',
-        'notifiable_id',
-        'notifiable_type',
     ];
 
     protected $casts = [
         'data'    => 'array',
-        'is_read' => 'boolean',
         'read_at' => 'datetime',
     ];
 
@@ -51,16 +45,16 @@ class Notification extends Model
 
     public function scopeUnread($query)
     {
-        return $query->where('is_read', false);
+        return $query->whereNull('read_at');
     }
 
     public function scopeRead($query)
     {
-        return $query->where('is_read', true);
+        return $query->whereNotNull('read_at');
     }
 
     public function markAsRead(): void
     {
-        $this->update(['is_read' => true, 'read_at' => now()]);
+        $this->update(['read_at' => now()]);
     }
 }

@@ -89,7 +89,7 @@ class User extends Authenticatable
 
     public function unreadNotifications()
     {
-        return $this->hasMany(Notification::class)->where('is_read', false);
+        return $this->hasMany(Notification::class)->whereNull('read_at');
     }
 
     public function getUnreadNotificationsCountAttribute(): int

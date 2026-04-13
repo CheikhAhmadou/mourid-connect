@@ -36,7 +36,6 @@ class NotificationController extends Controller
     public function markAllRead()
     {
         auth()->user()->notifications()->unread()->update([
-            'is_read' => true,
             'read_at' => now(),
         ]);
 

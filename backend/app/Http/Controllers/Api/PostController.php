@@ -61,14 +61,17 @@ class PostController extends Controller
 
         auth()->user()->followers->each(function ($follower) use ($post) {
             Notification::create([
-                'id'               => \Str::uuid(),
-                'user_id'          => $follower->id,
-                'type'             => 'new_post',
-                'title'            => auth()->user()->name . ' a publié un post',
-                'body'             => substr($post->content ?? '', 0, 100),
-                'data'             => ['post_id' => $post->id],
-                'notifiable_id'    => $post->id,
-                'notifiable_type'  => Post::class,
+                'id'      => (string) \Str::uuid(),
+                'user_id' => $follower->id,
+                'type'    => 'App\\Notifications\\NewPost',
+                'data'    => json_encode([
+                    'actor_id'   => auth()->id(),
+                    'actor_name' => auth()->user()->name,
+                    'text'       => auth()->user()->name . ' a publié un post',
+                    'post_id'    => $post->id,
+                    'link'       => '/connect',
+                    'icon'       => 'article',
+                ]),
             ]);
         });
 
@@ -111,14 +114,17 @@ class PostController extends Controller
 
         if ($post->user_id !== $user->id) {
             Notification::create([
-                'id'               => \Str::uuid(),
-                'user_id'          => $post->user_id,
-                'type'             => 'post_like',
-                'title'            => $user->name . ' a aimé votre post',
-                'body'             => substr($post->content ?? '', 0, 100),
-                'data'             => ['post_id' => $id, 'user_id' => $user->id],
-                'notifiable_id'    => $id,
-                'notifiable_type'  => Post::class,
+                'id'      => (string) \Str::uuid(),
+                'user_id' => $post->user_id,
+                'type'    => 'App\\Notifications\\PostLiked',
+                'data'    => json_encode([
+                    'actor_id'   => $user->id,
+                    'actor_name' => $user->name,
+                    'text'       => $user->name . ' a aimé votre publication.',
+                    'post_id'    => $id,
+                    'link'       => '/connect',
+                    'icon'       => 'favorite',
+                ]),
             ]);
         }
 
