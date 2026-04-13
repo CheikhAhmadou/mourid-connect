@@ -42,5 +42,15 @@ class DatabaseSeeder extends Seeder
 
         // 7. 50 avis
         $this->call(ReviewSeeder::class);
+
+        // 8. Connect : membres Paris + monde
+        $this->call(ParisMembersSeeder::class);
+        $this->call(WorldMembersSeeder::class);
+
+        // 9. Connect : groupes, événements, posts
+        $this->call(ConnectContentSeeder::class);
+
+        // 10. Connect : interactions sociales (follows, likes, commentaires, notifs)
+        $this->call(SocialInteractionsSeeder::class);
     }
 }
