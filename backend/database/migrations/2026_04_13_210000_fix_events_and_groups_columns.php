@@ -7,83 +7,83 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Corrige les colonnes de events et groups pour correspondre aux modèles.
- *
- * events :
- *   organizer_id → user_id
- *   cover_photo  → cover
- *   starts_at    → start_date
- *   ends_at      → end_date
- *   location_name→ location
- *   attendees_count → participants_count
- *   is_published → is_active
- *   type enum    : ziarra/dahira/conference/cultural/sports/general
- *                → religious/cultural/professional/general
- *   drop: address, online_url, is_free, slug
- *   add : max_participants
- *
- * groups :
- *   cover_photo → cover
- *   is_public   → is_private  (valeur inversée)
- *   add: is_active
- *   type enum   : ajoute 'theme'
- *   drop: avatar, requires_approval
+ * Entièrement idempotente : toutes les opérations sont protégées par hasColumn.
  */
 return new class extends Migration
 {
     public function up(): void
     {
-        // ── EVENTS ──────────────────────────────────────────────────────
+        // ── EVENTS : renames ──────────────────────────────────────────────
         Schema::table('events', function (Blueprint $table) {
-            $table->renameColumn('organizer_id',    'user_id');
-            $table->renameColumn('cover_photo',     'cover');
-            $table->renameColumn('starts_at',       'start_date');
-            $table->renameColumn('ends_at',         'end_date');
-            $table->renameColumn('location_name',   'location');
-            $table->renameColumn('attendees_count', 'participants_count');
-            $table->renameColumn('is_published',    'is_active');
+            if (Schema::hasColumn('events', 'organizer_id'))
+                $table->renameColumn('organizer_id', 'user_id');
+            if (Schema::hasColumn('events', 'cover_photo'))
+                $table->renameColumn('cover_photo', 'cover');
+            if (Schema::hasColumn('events', 'starts_at'))
+                $table->renameColumn('starts_at', 'start_date');
+            if (Schema::hasColumn('events', 'ends_at'))
+                $table->renameColumn('ends_at', 'end_date');
+            if (Schema::hasColumn('events', 'location_name'))
+                $table->renameColumn('location_name', 'location');
+            if (Schema::hasColumn('events', 'attendees_count'))
+                $table->renameColumn('attendees_count', 'participants_count');
+            if (Schema::hasColumn('events', 'is_published'))
+                $table->renameColumn('is_published', 'is_active');
         });
 
+        // ── EVENTS : drops & ajouts ───────────────────────────────────────
         Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn(['address', 'online_url', 'is_free', 'slug']);
-            $table->unsignedInteger('max_participants')->nullable()->after('participants_count');
+            $toDrop = array_filter(
+                ['address', 'online_url', 'is_free', 'slug'],
+                fn($col) => Schema::hasColumn('events', $col)
+            );
+            if ($toDrop) $table->dropColumn(array_values($toDrop));
+
+            if (!Schema::hasColumn('events', 'max_participants'))
+                $table->unsignedInteger('max_participants')->nullable()->after('participants_count');
         });
 
-        // Mettre à jour l'enum type (MySQL ne peut pas le faire via Blueprint seul)
+        // Mise à jour enum type events
         DB::statement("ALTER TABLE events MODIFY COLUMN type ENUM('religious','cultural','professional','general') DEFAULT 'general'");
 
-        // ── GROUPS ──────────────────────────────────────────────────────
+        // ── GROUPS : renames ──────────────────────────────────────────────
         Schema::table('groups', function (Blueprint $table) {
-            $table->renameColumn('cover_photo', 'cover');
-            $table->renameColumn('is_public',   'is_private');
+            if (Schema::hasColumn('groups', 'cover_photo'))
+                $table->renameColumn('cover_photo', 'cover');
+            if (Schema::hasColumn('groups', 'is_public'))
+                $table->renameColumn('is_public', 'is_private');
         });
 
-        // Inverser is_private (was is_public: 1=public → is_private: 0=not private)
-        DB::statement('UPDATE groups SET is_private = NOT is_private');
-
+        // ── GROUPS : is_active & nettoyage ───────────────────────────────
         Schema::table('groups', function (Blueprint $table) {
-            $table->boolean('is_active')->default(true)->after('posts_count');
-            $table->dropColumn(['avatar', 'requires_approval']);
+            if (!Schema::hasColumn('groups', 'is_active'))
+                $table->boolean('is_active')->default(true)->after('posts_count');
+
+            $toDrop = array_filter(
+                ['avatar', 'requires_approval'],
+                fn($col) => Schema::hasColumn('groups', $col)
+            );
+            if ($toDrop) $table->dropColumn(array_values($toDrop));
         });
 
-        // Ajouter 'theme' à l'enum type des groupes
+        // Mise à jour enum type groups
         DB::statement("ALTER TABLE groups MODIFY COLUMN type ENUM('dahira','city','country','theme','interest','general') DEFAULT 'general'");
     }
 
     public function down(): void
     {
-        // EVENTS – inverse
         Schema::table('events', function (Blueprint $table) {
-            $table->renameColumn('user_id',            'organizer_id');
-            $table->renameColumn('cover',              'cover_photo');
-            $table->renameColumn('start_date',         'starts_at');
-            $table->renameColumn('end_date',           'ends_at');
-            $table->renameColumn('location',           'location_name');
-            $table->renameColumn('participants_count', 'attendees_count');
-            $table->renameColumn('is_active',          'is_published');
+            if (Schema::hasColumn('events', 'user_id'))       $table->renameColumn('user_id', 'organizer_id');
+            if (Schema::hasColumn('events', 'cover'))          $table->renameColumn('cover', 'cover_photo');
+            if (Schema::hasColumn('events', 'start_date'))     $table->renameColumn('start_date', 'starts_at');
+            if (Schema::hasColumn('events', 'end_date'))       $table->renameColumn('end_date', 'ends_at');
+            if (Schema::hasColumn('events', 'location'))       $table->renameColumn('location', 'location_name');
+            if (Schema::hasColumn('events', 'participants_count')) $table->renameColumn('participants_count', 'attendees_count');
+            if (Schema::hasColumn('events', 'is_active'))      $table->renameColumn('is_active', 'is_published');
         });
 
         Schema::table('events', function (Blueprint $table) {
-            $table->dropColumn('max_participants');
+            if (Schema::hasColumn('events', 'max_participants')) $table->dropColumn('max_participants');
             $table->string('address')->nullable();
             $table->string('online_url')->nullable();
             $table->boolean('is_free')->default(true);
@@ -92,16 +92,13 @@ return new class extends Migration
 
         DB::statement("ALTER TABLE events MODIFY COLUMN type ENUM('ziarra','dahira','conference','cultural','sports','general') DEFAULT 'general'");
 
-        // GROUPS – inverse
         Schema::table('groups', function (Blueprint $table) {
-            $table->renameColumn('cover',      'cover_photo');
-            $table->renameColumn('is_private', 'is_public');
+            if (Schema::hasColumn('groups', 'cover'))      $table->renameColumn('cover', 'cover_photo');
+            if (Schema::hasColumn('groups', 'is_private')) $table->renameColumn('is_private', 'is_public');
         });
 
-        DB::statement('UPDATE groups SET is_public = NOT is_public');
-
         Schema::table('groups', function (Blueprint $table) {
-            $table->dropColumn('is_active');
+            if (Schema::hasColumn('groups', 'is_active')) $table->dropColumn('is_active');
             $table->string('avatar')->nullable();
             $table->boolean('requires_approval')->default(false);
         });
