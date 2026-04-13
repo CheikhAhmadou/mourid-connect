@@ -1,0 +1,109 @@
+<div class="groupes-page">
+
+  <div class="page-header">
+    <div>
+      <h1>Groupes & Dahiras</h1>
+      <p>Rejoignez votre communauté locale ou trouvez votre Dahira</p>
+    </div>
+    @if (auth.isLoggedIn()) {
+      <button class="btn-solid" (click)="showCreate.set(true)">+ Créer un groupe</button>
+    }
+  </div>
+
+  <!-- Filtres -->
+  <div class="filters-bar">
+    <div class="type-pills">
+      @for (t of types; track t.value) {
+        <button class="type-pill {{ type === t.value ? 'active' : '' }}"
+          (click)="type = t.value; load()">{{ t.label }}</button>
+      }
+    </div>
+    <div class="search-inline">
+      <input type="text" [(ngModel)]="search" (keyup.enter)="load()" placeholder="Rechercher un groupe...">
+    </div>
+  </div>
+
+  <!-- Modal créer groupe -->
+  @if (showCreate()) {
+    <div class="modal-overlay" (click)="showCreate.set(false)">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <h2>Créer un groupe</h2>
+        <div class="form-group">
+          <label>Nom *</label>
+          <input type="text" [(ngModel)]="gName" placeholder="Ex: Dahira Mourides de Paris">
+        </div>
+        <div class="form-group">
+          <label>Description *</label>
+          <textarea [(ngModel)]="gDescription" rows="3" placeholder="Décrivez votre groupe (min. 20 caractères)..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Type</label>
+            <select [(ngModel)]="gType">
+              <option value="dahira">🕌 Dahira</option>
+              <option value="city">🏙️ Par ville</option>
+              <option value="country">🌍 Par pays</option>
+              <option value="theme">💡 Thématique</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Pays</label>
+            <input type="text" [(ngModel)]="gCountry" placeholder="FR, SN...">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Ville</label>
+          <input type="text" [(ngModel)]="gCity" placeholder="Paris, Dakar...">
+        </div>
+        <div class="modal-actions">
+          <button class="btn-outline" (click)="showCreate.set(false)">Annuler</button>
+          <button class="btn-solid" (click)="createGroup()" [disabled]="saving()">
+            {{ saving() ? 'Création...' : 'Créer le groupe' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Grille groupes -->
+  @if (loading()) {
+    <div class="loading"><div class="spinner"></div></div>
+  } @else if (groups().length === 0) {
+    <div class="empty-state">
+      <span>👥</span>
+      <p>Aucun groupe trouvé. Soyez le premier à en créer un !</p>
+    </div>
+  } @else {
+    <div class="groups-grid">
+      @for (group of groups(); track group.id) {
+        <div class="group-card">
+          <div class="group-cover" [style.background-image]="'url(' + group.cover + ')'">
+            <span class="group-type-icon">{{ typeIcon(group.type) }}</span>
+          </div>
+          <div class="group-body">
+            <div class="group-name">{{ group.name }}</div>
+            @if (group.city || group.country) {
+              <div class="group-location">📍 {{ group.city }}{{ group.city && group.country ? ', ' : '' }}{{ group.country }}</div>
+            }
+            <p class="group-desc">{{ group.description }}</p>
+            <div class="group-stats">
+              <span>👥 {{ group.members_count }} membres</span>
+              <span>📝 {{ group.posts_count }} posts</span>
+            </div>
+            <div class="group-actions">
+              <a class="btn-outline-sm" [routerLink]="['/connect/groupes', group.slug]">Voir →</a>
+              @if (auth.isLoggedIn()) {
+                @if (group.is_member) {
+                  <button class="btn-leave" (click)="leave(group)">Quitter</button>
+                } @else {
+                  <button class="btn-join" (click)="join(group)">Rejoindre</button>
+                }
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</div>

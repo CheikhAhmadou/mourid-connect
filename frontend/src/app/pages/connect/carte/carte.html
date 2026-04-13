@@ -1,0 +1,74 @@
+<div class="carte-page">
+
+  <div class="page-header">
+    <h1>Carte mondiale des Mourides</h1>
+    <p>{{ members().length }} membres de la communauté dans le monde</p>
+  </div>
+
+  <!-- Stats par pays -->
+  @if (byCountry().length > 0) {
+    <div class="country-stats">
+      @for (stat of byCountry(); track stat.country) {
+        <button class="country-pill {{ country === stat.country ? 'active' : '' }}"
+          (click)="country = country === stat.country ? '' : stat.country; load()">
+          {{ countryFlag(stat.country) }} {{ stat.country }}
+          <span class="count">{{ stat.count }}</span>
+        </button>
+      }
+      @if (country) {
+        <button class="country-pill reset" (click)="country = ''; load()">✕ Tous</button>
+      }
+    </div>
+  }
+
+  <!-- Recherche -->
+  <div class="search-bar">
+    <span>🔍</span>
+    <input type="text" [(ngModel)]="search" placeholder="Rechercher par nom, Dahira, ville...">
+  </div>
+
+  @if (loading()) {
+    <div class="loading"><div class="spinner"></div></div>
+  } @else if (filtered.length === 0) {
+    <div class="empty-state">
+      <span>🌍</span>
+      <p>Aucun membre trouvé.</p>
+    </div>
+  } @else {
+    <div class="members-grid">
+      @for (member of filtered; track member.id) {
+        <div class="member-card">
+          <div class="member-avatar-wrap">
+            <img [src]="member.avatar" [alt]="member.name" class="member-avatar">
+            @if (member.is_available_help) {
+              <span class="help-dot" title="Disponible pour aider">🟢</span>
+            }
+          </div>
+          <div class="member-info">
+            <div class="member-name">{{ member.name }}</div>
+            @if (member.dahira_name) {
+              <div class="member-dahira">🕌 {{ member.dahira_name }}</div>
+            }
+            @if (member.profession) {
+              <div class="member-profession">{{ member.profession }}</div>
+            }
+            @if (member.city || member.country) {
+              <div class="member-location">
+                {{ countryFlag(member.country ?? '') }} {{ member.city }}{{ member.city && member.country ? ', ' : '' }}{{ member.country }}
+              </div>
+            }
+            <div class="member-stats">
+              <span>{{ member.followers_count }} abonnés</span>
+            </div>
+          </div>
+          @if (auth.isLoggedIn()) {
+            <button class="btn-follow {{ member.is_following ? 'following' : '' }}" (click)="follow(member)">
+              {{ member.is_following ? '✓ Suivi' : '+ Suivre' }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+  }
+
+</div>
