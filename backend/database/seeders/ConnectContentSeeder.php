@@ -250,7 +250,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'amadou.diop@mouride-paris.test',
                 'content' => 'Alhamdoulilah ! Notre dahira a atteint l\'objectif de collecte pour le Grand Magal 2025 🎉 Merci à tous les frères et sœurs pour leur générosité et leur confiance. Que Serigne Touba nous bénisse tous ! 🕌',
-                'type'    => 'general',
+                'type'    => 'text',
                 'likes'   => 47,
                 'comments'=> 12,
                 'group_id'=> $group?->id,
@@ -258,7 +258,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'binta.ndiaye@mouride-paris.test',
                 'content' => 'Les inscriptions pour les cours de wolof du samedi sont ouvertes ! 📚 Nous accueillons les enfants de 6 à 14 ans tous les samedis matin à Paris 10e. Les enfants de la diaspora ont le droit de connaître leur langue maternelle. Contactez-moi en message privé.',
-                'type'    => 'announcement',
+                'type'    => 'text',
                 'likes'   => 89,
                 'comments'=> 23,
                 'group_id'=> null,
@@ -266,7 +266,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'serigne.fall@mouride-paris.test',
                 'content' => 'Rappel : tous les membres qui ont des problèmes administratifs (titre de séjour, naturalisation, démarches CAF) peuvent me contacter. Je propose des consultations gratuites pour la communauté le premier samedi du mois. 🤝 #SolidaritéMouride',
-                'type'    => 'help',
+                'type'    => 'text',
                 'likes'   => 156,
                 'comments'=> 34,
                 'group_id'=> null,
@@ -274,7 +274,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'ibrahima.ba@mouride-paris.test',
                 'content' => 'Nouveau menu spécial Magal au restaurant cette semaine 🍲 Thiéboudienne au poisson, mafé agneau, yassa poulet et ceebu jën. Réservations au 📞 ou en DM. Bienvenue à tous les frères et sœurs ! 🇸🇳',
-                'type'    => 'general',
+                'type'    => 'text',
                 'likes'   => 73,
                 'comments'=> 18,
                 'group_id'=> null,
@@ -282,7 +282,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'omar.gaye@mouride-paris.test',
                 'content' => 'Je cherche des développeurs web/mobile dans la communauté pour un projet de plateforme d\'entraide mouride. Le projet est bénévole mais avec de belles perspectives. Qui est partant ? 💻 #TechMouride',
-                'type'    => 'general',
+                'type'    => 'text',
                 'likes'   => 38,
                 'comments'=> 27,
                 'group_id'=> null,
@@ -290,7 +290,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'mariama.sow@mouride-paris.test',
                 'content' => 'Aide aux déclarations fiscales pour les membres de la communauté 💼 C\'est la période de déclaration d\'impôts. Si vous avez besoin d\'aide pour comprendre votre avis ou remplir votre déclaration, n\'hésitez pas à me solliciter. Service gratuit pour la communauté.',
-                'type'    => 'help',
+                'type'    => 'text',
                 'likes'   => 112,
                 'comments'=> 41,
                 'group_id'=> null,
@@ -298,7 +298,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'fatou.mbaye@mouride-paris.test',
                 'content' => 'Rappel de santé pour la communauté 🌿 Le printemps est là — pensez à votre bilan de santé annuel ! En tant qu\'infirmière, je recommande particulièrement le dépistage du diabète et de l\'hypertension, plus fréquents dans notre communauté. Alhamdoulilah pour la santé !',
-                'type'    => 'general',
+                'type'    => 'text',
                 'likes'   => 94,
                 'comments'=> 15,
                 'group_id'=> null,
@@ -306,7 +306,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'moussa.cisse@mouride-paris.test',
                 'content' => 'Le Forum Entrepreneurs Mourides Paris 2025 est officiel ! 🚀 Plus de 50 entrepreneurs inscrits, des investisseurs confirmés, des tables rondes inspirantes. C\'est l\'événement de l\'année pour notre communauté business. Inscriptions ouvertes sur le lien en bio.',
-                'type'    => 'announcement',
+                'type'    => 'text',
                 'likes'   => 203,
                 'comments'=> 56,
                 'group_id'=> null,
@@ -314,7 +314,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'aissatou.diallo@mouride-paris.test',
                 'content' => 'Je finalise ma thèse sur "Le droit international face aux migrations climatiques" 📖 Si des membres de la communauté ont des expériences de migration à partager (anonymement), je serais très reconnaissante. Mourid Connect me permet de toucher notre diaspora mondiale. Barakallahu fikoum !',
-                'type'    => 'general',
+                'type'    => 'text',
                 'likes'   => 67,
                 'comments'=> 19,
                 'group_id'=> null,
@@ -322,7 +322,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'cheikh.sarr@mouride-paris.test',
                 'content' => 'Concert organisé ! 🎵 Soirée mbalax & culture sénégalaise à La Bellevilloise (Paris 20e). Musique live, expo artisanale, gastronomie. Les bénéfices iront à la dahira. Places limitées — réservez tôt ! Lien en bio. 🕌🎶',
-                'type'    => 'announcement',
+                'type'    => 'text',
                 'likes'   => 145,
                 'comments'=> 33,
                 'group_id'=> null,
@@ -331,7 +331,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'amadou.diop@mouride-paris.test',
                 'content' => 'Réunion mensuelle de la Dahira Moustarchidine ce dimanche à 15h. Ordre du jour : préparation Magal, collecte en cours, accueil nouveaux membres. Soyez nombreux ! 🕌',
-                'type'    => 'announcement',
+                'type'    => 'text',
                 'likes'   => 34,
                 'comments'=> 8,
                 'group_id'=> $group?->id,
@@ -339,7 +339,7 @@ class ConnectContentSeeder extends Seeder
             [
                 'author'  => 'mariama.sow@mouride-paris.test',
                 'content' => 'Collecte pour la dahira : nous avons atteint 78% de l\'objectif ! 💰 Il nous reste 3 semaines. Chaque contribution compte. Barakhallahu fikoum pour votre générosité.',
-                'type'    => 'general',
+                'type'    => 'text',
                 'likes'   => 28,
                 'comments'=> 6,
                 'group_id'=> $group?->id,
