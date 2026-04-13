@@ -11,6 +11,9 @@ php artisan db:seed --force || echo "Seeding failed, continuing..."
 echo "==> Seeding Paris members (idempotent)..."
 php artisan db:seed --class=ParisMembersSeeder --force || echo "Paris members seeder failed, continuing..."
 
+echo "==> Seeding Connect content (groups, events, posts)..."
+php artisan db:seed --class=ConnectContentSeeder --force || echo "Connect content seeder failed, continuing..."
+
 echo "==> Caching config..."
 php artisan config:cache || true
 php artisan route:cache || true
