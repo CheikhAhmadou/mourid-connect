@@ -100,7 +100,7 @@
         } @else {
           @for (member of filtered; track member.id) {
             <div class="c-member-row">
-              <div class="cm-av" [style.background]="avatarGrad(member.id)">{{ member.name?.charAt(0) }}</div>
+              <div class="cm-av" [style.background]="avatarGrad(member.id)">{{ member.name.charAt(0) }}</div>
               <div class="cm-info">
                 <div class="cm-name">
                   {{ member.name }}

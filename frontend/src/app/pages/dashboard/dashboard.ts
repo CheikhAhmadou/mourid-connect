@@ -1,7 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { DecimalPipe } from '@angular/common';
 import { AuthService } from '../../core/services/auth';
 import { ApiService } from '../../core/services/api';
 import { CurrencyService } from '../../core/services/currency';
@@ -13,7 +12,7 @@ type View = 'shops' | 'create-shop' | 'create-product';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [FormsModule, RouterLink, DecimalPipe],
+  imports: [FormsModule, RouterLink],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
