@@ -60,6 +60,126 @@ body {
   &:hover { border-color: var(--gold); color: var(--gold); }
 }
 
+/* ─── Connect App Layout ─── */
+.c-wrap {
+  display: flex;
+  margin-top: 72px;
+  min-height: calc(100vh - 72px);
+  background: #F0EDE6;
+}
+.c-sidebar {
+  width: 220px;
+  background: #fff;
+  border-right: 1px solid #E5E7EB;
+  flex-shrink: 0;
+  position: sticky;
+  top: 72px;
+  height: calc(100vh - 72px);
+  overflow-y: auto;
+  &::-webkit-scrollbar { width: 3px; }
+  &::-webkit-scrollbar-thumb { background: #E5E7EB; }
+}
+.c-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+// Sidebar user card
+.cs-card { margin: 12px; border-radius: 12px; overflow: hidden; border: 1px solid #E5E7EB; }
+.cs-cover {
+  height: 52px;
+  background: linear-gradient(135deg, #1B4332, #40916C);
+  position: relative;
+  .cs-cover-pat {
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.06) 0, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 10px);
+  }
+}
+.cs-info { padding: 0 10px 10px; background: #fff; }
+.cs-av {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, #2D6A4F, #40916C);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 600; color: #fff;
+  border: 3px solid #fff; margin-top: -20px; margin-bottom: 6px;
+}
+.cs-name { font-size: 13px; font-weight: 600; color: #111827; margin-bottom: 1px; }
+.cs-meta { font-size: 10px; color: #6B7280; margin-bottom: 8px; }
+.cs-login { color: #1B4332; text-decoration: none; font-weight: 600; }
+.cs-stats {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center;
+  .cs-sv { display: block; font-size: 14px; font-weight: 600; color: #1B4332; }
+  .cs-sl { display: block; font-size: 9px; color: #6B7280; }
+}
+.cs-section { font-size: 9px; font-weight: 700; color: #9CA3AF; letter-spacing: 1px; text-transform: uppercase; padding: 10px 14px 4px; }
+a.cs-nav {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; font-size: 12px; color: #374151;
+  border-right: 3px solid transparent;
+  transition: all 0.15s; text-decoration: none;
+  &:hover { background: #F9FAFB; }
+  &.active { background: #FFF8E7; color: #1B4332; border-right-color: #C9A84C; font-weight: 600; }
+  .cs-icon { font-size: 15px; width: 20px; text-align: center; }
+  .cs-badge { margin-left: auto; background: #C9A84C; color: #1B4332; font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 10px; }
+}
+// Shared Connect card + header
+.cc-card { background: #fff; border-radius: 12px; border: 1px solid #E5E7EB; overflow: hidden; }
+.cc-header {
+  padding: 10px 14px; border-bottom: 1px solid #F3F4F6;
+  display: flex; align-items: center; justify-content: space-between;
+  .cc-title { font-size: 13px; font-weight: 600; color: #111827; }
+  a.cc-link, .cc-link { font-size: 11px; color: #1B4332; cursor: pointer; text-decoration: none; border: none; background: none; font-family: 'DM Sans', sans-serif; }
+}
+// Member row (shared)
+.c-member-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px; border-bottom: 1px solid #F9FAFB; cursor: pointer;
+  &:hover { background: #F9FAFB; }
+  &:last-child { border: none; }
+  .cm-av {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; color: #fff; flex-shrink: 0;
+  }
+  .cm-info { flex: 1; }
+  .cm-name { font-size: 12px; font-weight: 600; color: #111827; }
+  .cm-sub { font-size: 10px; color: #6B7280; }
+  .cm-on { width: 8px; height: 8px; border-radius: 50%; background: #10B981; flex-shrink: 0; }
+  .cm-off { width: 8px; height: 8px; border-radius: 50%; background: #D1D5DB; flex-shrink: 0; }
+}
+// Follow button
+.c-follow-btn {
+  font-size: 10px; padding: 3px 10px; border-radius: 6px;
+  border: 1px solid #1B4332; color: #1B4332; cursor: pointer;
+  background: transparent; white-space: nowrap; font-family: 'DM Sans', sans-serif;
+  &.following { background: #1B4332; color: #fff; }
+}
+// Filter pills
+.c-pills { display: flex; gap: 6px; flex-wrap: wrap; padding: 10px 14px; }
+.c-pill {
+  padding: 4px 12px; border-radius: 12px; font-size: 11px;
+  border: 1px solid #E5E7EB; color: #6B7280; cursor: pointer; background: #fff;
+  font-family: 'DM Sans', sans-serif; transition: all 0.15s;
+  &.active { background: #1B4332; color: #fff; border-color: #1B4332; }
+  &:hover:not(.active) { border-color: #1B4332; color: #1B4332; }
+}
+// Stats row
+.c-stats-row {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+  .c-stat-card {
+    background: #fff; border-radius: 10px; border: 1px solid #E5E7EB; padding: 10px 12px;
+    .csv { font-size: 18px; font-weight: 700; color: #1B4332; }
+    .csl { font-size: 10px; color: #6B7280; margin-top: 1px; }
+    .csg { font-size: 10px; color: #059669; margin-top: 3px; }
+  }
+}
+// Spinner / empty
+.c-spinner { text-align: center; padding: 40px; .spinner { width: 28px; height: 28px; border: 3px solid #E5E7EB; border-top-color: #1B4332; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto; } }
+.c-empty { text-align: center; padding: 32px; color: #9CA3AF; .c-empty-icon { font-size: 32px; margin-bottom: 8px; } p { font-size: 13px; } }
+
 /* ─── Section Shared ─── */
 .section { padding: 100px 48px; }
 

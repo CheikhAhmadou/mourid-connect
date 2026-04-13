@@ -1,66 +1,107 @@
-<div class="evenements-page">
+<div class="c-wrap">
 
-  <div class="page-header">
-    <h1>Événements communautaires</h1>
-    <p>Ziarras, conférences, rassemblements mourides partout dans le monde</p>
-  </div>
-
-  <div class="type-pills">
-    @for (t of types; track t.value) {
-      <button class="type-pill {{ type === t.value ? 'active' : '' }}" (click)="type = t.value; load()">
-        {{ t.label }}
-      </button>
-    }
-  </div>
-
-  @if (loading()) {
-    <div class="loading"><div class="spinner"></div></div>
-  } @else if (events().length === 0) {
-    <div class="empty-state">
-      <span>📅</span>
-      <p>Aucun événement à venir pour l'instant.</p>
+  <!-- ── Sidebar ── -->
+  <aside class="c-sidebar">
+    <div class="cs-card">
+      <div class="cs-cover"><div class="cs-cover-pat"></div></div>
+      <div class="cs-info">
+        <div class="cs-av">{{ auth.currentUser()?.name?.charAt(0) || '🕌' }}</div>
+        @if (auth.isLoggedIn()) {
+          <div class="cs-name">{{ auth.currentUser()?.name }}</div>
+          <div class="cs-meta">Communauté mouride</div>
+          <div class="cs-stats">
+            <div><span class="cs-sv">—</span><span class="cs-sl">Abonnés</span></div>
+            <div><span class="cs-sv">—</span><span class="cs-sl">Suivi</span></div>
+            <div><span class="cs-sv">—</span><span class="cs-sl">Posts</span></div>
+          </div>
+        } @else {
+          <div class="cs-name">Visiteur</div>
+          <div class="cs-meta"><a routerLink="/auth" class="cs-login">Se connecter →</a></div>
+        }
+      </div>
     </div>
-  } @else {
-    <div class="events-grid">
-      @for (event of events(); track event.id) {
-        <div class="event-card">
-          <div class="event-cover" [style.background-image]="'url(' + event.cover + ')'">
-            <span class="event-type-badge">{{ typeLabel(event.type) }}</span>
-            @if (event.is_online) { <span class="online-badge">🌐 En ligne</span> }
-          </div>
-          <div class="event-body">
-            <div class="event-date">
-              <span class="date-icon">📅</span>
-              <span>{{ event.start_date }}</span>
-              <span class="date-human">({{ event.start_date_human }})</span>
-            </div>
-            <h3 class="event-title">{{ event.title }}</h3>
-            @if (event.location || event.city) {
-              <div class="event-location">📍 {{ event.location || '' }}{{ event.location && event.city ? ' — ' : '' }}{{ event.city }}</div>
-            }
-            @if (event.description) {
-              <p class="event-desc">{{ event.description }}</p>
-            }
-            <div class="event-footer">
-              <div class="event-stats">
-                <span>👥 {{ event.participants_count }} participant{{ event.participants_count > 1 ? 's' : '' }}</span>
-                @if (event.max_participants) {
-                  <span>/ {{ event.max_participants }} max</span>
-                }
+    <div class="cs-section">Navigation</div>
+    <a routerLink="/connect" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="cs-nav">
+      <span class="cs-icon">📝</span> Fil d'actualité
+    </a>
+    <a routerLink="/connect/membres" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">🗺️</span> Carte des membres
+    </a>
+    <a routerLink="/connect/groupes" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">👥</span> Groupes & Dahiras
+    </a>
+    <a routerLink="/connect/evenements" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">📅</span> Événements
+    </a>
+  </aside>
+
+  <!-- ── Main ── -->
+  <div class="c-main">
+    <div class="evt-wrap">
+
+      <!-- Header -->
+      <div class="cc-card">
+        <div class="cc-header">
+          <div class="cc-title">📅 Événements communautaires</div>
+        </div>
+        <div class="c-pills">
+          @for (t of types; track t.value) {
+            <button class="c-pill" [class.active]="type === t.value" (click)="type = t.value; load()">{{ t.label }}</button>
+          }
+        </div>
+      </div>
+
+      <!-- Events list -->
+      @if (loading()) {
+        <div class="c-spinner"><div class="spinner"></div></div>
+      } @else if (events().length === 0) {
+        <div class="cc-card c-empty">
+          <div class="c-empty-icon">📅</div>
+          <p>Aucun événement à venir pour l'instant.</p>
+        </div>
+      } @else {
+        <div class="evt-grid">
+          @for (event of events(); track event.id) {
+            <div class="evt-card">
+              <div class="evt-card-left">
+                <div class="evt-date-box">
+                  <div class="edb-day">{{ event.start_date | slice:8:10 }}</div>
+                  <div class="edb-month">{{ event.start_date | slice:5:7 }}</div>
+                </div>
+                <div class="evt-type-line"></div>
               </div>
-              @if (auth.isLoggedIn() && !event.is_full) {
-                <button class="btn-join {{ event.is_participant ? 'joined' : '' }}" (click)="join(event)">
-                  {{ event.is_participant ? '✓ Inscrit' : 'Participer' }}
-                </button>
-              } @else if (event.is_full) {
-                <span class="badge-full">Complet</span>
-              }
+              <div class="evt-card-body">
+                <div class="evt-badges">
+                  <span class="evt-badge evt-badge-type">{{ typeLabel(event.type) }}</span>
+                  @if (event.is_online) { <span class="evt-badge evt-badge-online">🌐 En ligne</span> }
+                  @if (event.is_full) { <span class="evt-badge evt-badge-full">Complet</span> }
+                  @if (event.is_participant) { <span class="evt-badge evt-badge-joined">✓ Inscrit</span> }
+                </div>
+                <div class="evt-title">{{ event.title }}</div>
+                @if (event.city || event.location) {
+                  <div class="evt-location">📍 {{ event.location || '' }}{{ event.location && event.city ? ' — ' : '' }}{{ event.city }}</div>
+                }
+                @if (event.description) {
+                  <p class="evt-desc">{{ event.description }}</p>
+                }
+                <div class="evt-footer">
+                  <div class="evt-participants">
+                    👥 {{ event.participants_count }} participant{{ event.participants_count > 1 ? 's' : '' }}
+                    @if (event.max_participants) { / {{ event.max_participants }} max }
+                  </div>
+                  @if (auth.isLoggedIn() && !event.is_full) {
+                    <button class="evt-btn" [class.evt-btn-joined]="event.is_participant" (click)="join(event)">
+                      {{ event.is_participant ? '✓ Inscrit' : 'Participer' }}
+                    </button>
+                  }
+                </div>
+                <div class="evt-organizer">Organisé par {{ event.organizer.name }}</div>
+              </div>
             </div>
-            <div class="event-organizer">Organisé par {{ event.organizer.name }}</div>
-          </div>
+          }
         </div>
       }
-    </div>
-  }
 
+    </div>
+  </div>
 </div>

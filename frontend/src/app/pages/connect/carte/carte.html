@@ -1,74 +1,128 @@
-<div class="carte-page">
+<div class="c-wrap">
 
-  <div class="page-header">
-    <h1>Carte mondiale des Mourides</h1>
-    <p>{{ members().length }} membres de la communauté dans le monde</p>
-  </div>
-
-  <!-- Stats par pays -->
-  @if (byCountry().length > 0) {
-    <div class="country-stats">
-      @for (stat of byCountry(); track stat.country) {
-        <button class="country-pill {{ country === stat.country ? 'active' : '' }}"
-          (click)="country = country === stat.country ? '' : stat.country; load()">
-          {{ countryFlag(stat.country) }} {{ stat.country }}
-          <span class="count">{{ stat.count }}</span>
-        </button>
-      }
-      @if (country) {
-        <button class="country-pill reset" (click)="country = ''; load()">✕ Tous</button>
-      }
+  <!-- ── Sidebar ── -->
+  <aside class="c-sidebar">
+    <div class="cs-card">
+      <div class="cs-cover"><div class="cs-cover-pat"></div></div>
+      <div class="cs-info">
+        <div class="cs-av">{{ auth.currentUser()?.name?.charAt(0) || '🕌' }}</div>
+        @if (auth.isLoggedIn()) {
+          <div class="cs-name">{{ auth.currentUser()?.name }}</div>
+          <div class="cs-meta">Communauté mouride</div>
+          <div class="cs-stats">
+            <div><span class="cs-sv">—</span><span class="cs-sl">Abonnés</span></div>
+            <div><span class="cs-sv">—</span><span class="cs-sl">Suivi</span></div>
+            <div><span class="cs-sv">—</span><span class="cs-sl">Posts</span></div>
+          </div>
+        } @else {
+          <div class="cs-name">Visiteur</div>
+          <div class="cs-meta"><a routerLink="/auth" class="cs-login">Se connecter →</a></div>
+        }
+      </div>
     </div>
-  }
+    <div class="cs-section">Navigation</div>
+    <a routerLink="/connect" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="cs-nav">
+      <span class="cs-icon">📝</span> Fil d'actualité
+    </a>
+    <a routerLink="/connect/membres" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">🗺️</span> Carte des membres
+    </a>
+    <a routerLink="/connect/groupes" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">👥</span> Groupes & Dahiras
+    </a>
+    <a routerLink="/connect/evenements" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">📅</span> Événements
+    </a>
+  </aside>
 
-  <!-- Recherche -->
-  <div class="search-bar">
-    <span>🔍</span>
-    <input type="text" [(ngModel)]="search" placeholder="Rechercher par nom, Dahira, ville...">
-  </div>
+  <!-- ── Main ── -->
+  <div class="c-main">
 
-  @if (loading()) {
-    <div class="loading"><div class="spinner"></div></div>
-  } @else if (filtered.length === 0) {
-    <div class="empty-state">
-      <span>🌍</span>
-      <p>Aucun membre trouvé.</p>
-    </div>
-  } @else {
-    <div class="members-grid">
-      @for (member of filtered; track member.id) {
-        <div class="member-card">
-          <div class="member-avatar-wrap">
-            <img [src]="member.avatar" [alt]="member.name" class="member-avatar">
-            @if (member.is_available_help) {
-              <span class="help-dot" title="Disponible pour aider">🟢</span>
+    <!-- Left: filters + map + stats -->
+    <div class="carte-map-col">
+
+      <!-- Search + filters -->
+      <div class="cc-card">
+        <div class="cc-header">
+          <div class="cc-title">🗺️ Carte mondiale des Mourides</div>
+          <span style="font-size:11px;color:#6B7280">{{ members().length }} membres</span>
+        </div>
+        <div style="padding:10px 14px">
+          <input class="carte-search" type="text" [(ngModel)]="search" placeholder="🔍 Nom, Dahira, ville...">
+        </div>
+        @if (byCountry().length > 0) {
+          <div class="c-pills" style="padding:0 14px 12px">
+            <button class="c-pill" [class.active]="!country" (click)="country = ''; load()">🌍 Tous</button>
+            @for (stat of byCountry(); track stat.country) {
+              <button class="c-pill" [class.active]="country === stat.country" (click)="country = country === stat.country ? '' : stat.country; load()">
+                {{ countryFlag(stat.country) }} {{ stat.country }}
+                <span style="opacity:0.7;margin-left:2px">{{ stat.count }}</span>
+              </button>
             }
           </div>
-          <div class="member-info">
-            <div class="member-name">{{ member.name }}</div>
-            @if (member.dahira_name) {
-              <div class="member-dahira">🕌 {{ member.dahira_name }}</div>
-            }
-            @if (member.profession) {
-              <div class="member-profession">{{ member.profession }}</div>
-            }
-            @if (member.city || member.country) {
-              <div class="member-location">
-                {{ countryFlag(member.country ?? '') }} {{ member.city }}{{ member.city && member.country ? ', ' : '' }}{{ member.country }}
-              </div>
-            }
-            <div class="member-stats">
-              <span>{{ member.followers_count }} abonnés</span>
-            </div>
+        }
+      </div>
+
+      <!-- Stats -->
+      @if (!loading() && members().length > 0) {
+        <div class="c-stats-row">
+          <div class="c-stat-card">
+            <div class="csv">{{ members().length }}</div>
+            <div class="csl">Membres visibles</div>
           </div>
-          @if (auth.isLoggedIn()) {
-            <button class="btn-follow {{ member.is_following ? 'following' : '' }}" (click)="follow(member)">
-              {{ member.is_following ? '✓ Suivi' : '+ Suivre' }}
-            </button>
-          }
+          <div class="c-stat-card">
+            <div class="csv">{{ byCountry().length }}</div>
+            <div class="csl">Pays représentés</div>
+          </div>
+          <div class="c-stat-card">
+            <div class="csv">{{ members().length > 0 ? filtered.filter(m => m.is_available_help).length : 0 }}</div>
+            <div class="csl">Disponibles pour aider</div>
+          </div>
         </div>
       }
-    </div>
-  }
 
+    </div>
+
+    <!-- Right: members list -->
+    <div class="carte-list-col">
+      <div class="cc-card">
+        <div class="cc-header">
+          <div class="cc-title">👥 {{ country ? countryFlag(country) + ' ' + country : 'Tous les membres' }}</div>
+          <span style="font-size:11px;color:#6B7280">{{ filtered.length }} résultat{{ filtered.length > 1 ? 's' : '' }}</span>
+        </div>
+        @if (loading()) {
+          <div class="c-spinner"><div class="spinner"></div></div>
+        } @else if (filtered.length === 0) {
+          <div class="c-empty">
+            <div class="c-empty-icon">🌍</div>
+            <p>Aucun membre trouvé.</p>
+          </div>
+        } @else {
+          @for (member of filtered; track member.id) {
+            <div class="c-member-row">
+              <div class="cm-av" [style.background]="avatarGrad(member.id)">{{ member.name?.charAt(0) }}</div>
+              <div class="cm-info">
+                <div class="cm-name">
+                  {{ member.name }}
+                  @if (member.is_available_help) { <span class="carte-help-dot" title="Disponible pour aider">🟢</span> }
+                </div>
+                <div class="cm-sub">
+                  @if (member.dahira_name) { 🕌 {{ member.dahira_name }} · }
+                  @if (member.city || member.country) { {{ countryFlag(member.country ?? '') }} {{ member.city }}{{ member.city && member.country ? ', ' : '' }}{{ member.country }} }
+                  @if (member.profession) { · {{ member.profession }} }
+                </div>
+              </div>
+              <div class="carte-followers">{{ member.followers_count }} abonnés</div>
+              @if (auth.isLoggedIn()) {
+                <button class="c-follow-btn" [class.following]="member.is_following" (click)="follow(member)">
+                  {{ member.is_following ? '✓ Suivi' : 'Suivre' }}
+                </button>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+
+  </div>
 </div>

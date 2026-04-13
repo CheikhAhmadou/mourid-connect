@@ -1,109 +1,149 @@
-<div class="groupes-page">
+<div class="c-wrap">
 
-  <div class="page-header">
-    <div>
-      <h1>Groupes & Dahiras</h1>
-      <p>Rejoignez votre communauté locale ou trouvez votre Dahira</p>
-    </div>
-    @if (auth.isLoggedIn()) {
-      <button class="btn-solid" (click)="showCreate.set(true)">+ Créer un groupe</button>
-    }
-  </div>
-
-  <!-- Filtres -->
-  <div class="filters-bar">
-    <div class="type-pills">
-      @for (t of types; track t.value) {
-        <button class="type-pill {{ type === t.value ? 'active' : '' }}"
-          (click)="type = t.value; load()">{{ t.label }}</button>
-      }
-    </div>
-    <div class="search-inline">
-      <input type="text" [(ngModel)]="search" (keyup.enter)="load()" placeholder="Rechercher un groupe...">
-    </div>
-  </div>
-
-  <!-- Modal créer groupe -->
-  @if (showCreate()) {
-    <div class="modal-overlay" (click)="showCreate.set(false)">
-      <div class="modal-card" (click)="$event.stopPropagation()">
-        <h2>Créer un groupe</h2>
-        <div class="form-group">
-          <label>Nom *</label>
-          <input type="text" [(ngModel)]="gName" placeholder="Ex: Dahira Mourides de Paris">
-        </div>
-        <div class="form-group">
-          <label>Description *</label>
-          <textarea [(ngModel)]="gDescription" rows="3" placeholder="Décrivez votre groupe (min. 20 caractères)..."></textarea>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Type</label>
-            <select [(ngModel)]="gType">
-              <option value="dahira">🕌 Dahira</option>
-              <option value="city">🏙️ Par ville</option>
-              <option value="country">🌍 Par pays</option>
-              <option value="theme">💡 Thématique</option>
-            </select>
+  <!-- ── Sidebar ── -->
+  <aside class="c-sidebar">
+    <div class="cs-card">
+      <div class="cs-cover"><div class="cs-cover-pat"></div></div>
+      <div class="cs-info">
+        <div class="cs-av">{{ auth.currentUser()?.name?.charAt(0) || '🕌' }}</div>
+        @if (auth.isLoggedIn()) {
+          <div class="cs-name">{{ auth.currentUser()?.name }}</div>
+          <div class="cs-meta">Communauté mouride</div>
+          <div class="cs-stats">
+            <div><span class="cs-sv">—</span><span class="cs-sl">Abonnés</span></div>
+            <div><span class="cs-sv">—</span><span class="cs-sl">Suivi</span></div>
+            <div><span class="cs-sv">—</span><span class="cs-sl">Posts</span></div>
           </div>
-          <div class="form-group">
-            <label>Pays</label>
-            <input type="text" [(ngModel)]="gCountry" placeholder="FR, SN...">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Ville</label>
-          <input type="text" [(ngModel)]="gCity" placeholder="Paris, Dakar...">
-        </div>
-        <div class="modal-actions">
-          <button class="btn-outline" (click)="showCreate.set(false)">Annuler</button>
-          <button class="btn-solid" (click)="createGroup()" [disabled]="saving()">
-            {{ saving() ? 'Création...' : 'Créer le groupe' }}
-          </button>
-        </div>
+        } @else {
+          <div class="cs-name">Visiteur</div>
+          <div class="cs-meta"><a routerLink="/auth" class="cs-login">Se connecter →</a></div>
+        }
       </div>
     </div>
-  }
+    <div class="cs-section">Navigation</div>
+    <a routerLink="/connect" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="cs-nav">
+      <span class="cs-icon">📝</span> Fil d'actualité
+    </a>
+    <a routerLink="/connect/membres" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">🗺️</span> Carte des membres
+    </a>
+    <a routerLink="/connect/groupes" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">👥</span> Groupes & Dahiras
+    </a>
+    <a routerLink="/connect/evenements" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">📅</span> Événements
+    </a>
+  </aside>
 
-  <!-- Grille groupes -->
-  @if (loading()) {
-    <div class="loading"><div class="spinner"></div></div>
-  } @else if (groups().length === 0) {
-    <div class="empty-state">
-      <span>👥</span>
-      <p>Aucun groupe trouvé. Soyez le premier à en créer un !</p>
-    </div>
-  } @else {
-    <div class="groups-grid">
-      @for (group of groups(); track group.id) {
-        <div class="group-card">
-          <div class="group-cover" [style.background-image]="'url(' + group.cover + ')'">
-            <span class="group-type-icon">{{ typeIcon(group.type) }}</span>
-          </div>
-          <div class="group-body">
-            <div class="group-name">{{ group.name }}</div>
-            @if (group.city || group.country) {
-              <div class="group-location">📍 {{ group.city }}{{ group.city && group.country ? ', ' : '' }}{{ group.country }}</div>
-            }
-            <p class="group-desc">{{ group.description }}</p>
-            <div class="group-stats">
-              <span>👥 {{ group.members_count }} membres</span>
-              <span>📝 {{ group.posts_count }} posts</span>
+  <!-- ── Main ── -->
+  <div class="c-main">
+    <div class="grp-wrap">
+
+      <!-- Header card -->
+      <div class="cc-card">
+        <div class="cc-header">
+          <div class="cc-title">👥 Groupes & Dahiras</div>
+          @if (auth.isLoggedIn()) {
+            <button class="cc-link" (click)="showCreate.set(!showCreate())">
+              {{ showCreate() ? '✕ Annuler' : '+ Créer un groupe' }}
+            </button>
+          }
+        </div>
+        <div class="c-pills">
+          @for (t of types; track t.value) {
+            <button class="c-pill" [class.active]="type === t.value" (click)="type = t.value; load()">{{ t.label }}</button>
+          }
+        </div>
+        <div style="padding:0 14px 12px">
+          <input class="grp-search" type="text" [(ngModel)]="search" (keyup.enter)="load()" placeholder="🔍 Rechercher un groupe, une dahira...">
+        </div>
+      </div>
+
+      <!-- Create form -->
+      @if (showCreate()) {
+        <div class="cc-card grp-create">
+          <div class="cc-header"><div class="cc-title">✨ Créer un groupe</div></div>
+          <div class="grp-form">
+            <div class="gf-row">
+              <div class="gf-group">
+                <label>Nom *</label>
+                <input type="text" [(ngModel)]="gName" placeholder="Ex: Dahira Mourides de Paris">
+              </div>
+              <div class="gf-group">
+                <label>Type</label>
+                <select [(ngModel)]="gType">
+                  <option value="dahira">🕌 Dahira</option>
+                  <option value="city">🏙️ Par ville</option>
+                  <option value="country">🌍 Par pays</option>
+                  <option value="theme">💡 Thématique</option>
+                </select>
+              </div>
             </div>
-            <div class="group-actions">
-              <a class="btn-outline-sm" [routerLink]="['/connect/groupes', group.slug]">Voir →</a>
-              @if (auth.isLoggedIn()) {
-                @if (group.is_member) {
-                  <button class="btn-leave" (click)="leave(group)">Quitter</button>
-                } @else {
-                  <button class="btn-join" (click)="join(group)">Rejoindre</button>
-                }
-              }
+            <div class="gf-group">
+              <label>Description *</label>
+              <textarea [(ngModel)]="gDescription" rows="2" placeholder="Décrivez votre groupe (min. 20 caractères)..."></textarea>
+            </div>
+            <div class="gf-row">
+              <div class="gf-group">
+                <label>Pays</label>
+                <input type="text" [(ngModel)]="gCountry" placeholder="FR, SN, BE...">
+              </div>
+              <div class="gf-group">
+                <label>Ville</label>
+                <input type="text" [(ngModel)]="gCity" placeholder="Paris, Dakar...">
+              </div>
+            </div>
+            <div class="gf-actions">
+              <button class="gf-btn-cancel" (click)="showCreate.set(false)">Annuler</button>
+              <button class="gf-btn-submit" (click)="createGroup()" [disabled]="saving()">
+                {{ saving() ? 'Création...' : 'Créer le groupe' }}
+              </button>
             </div>
           </div>
         </div>
       }
-    </div>
-  }
 
+      <!-- Groups grid -->
+      @if (loading()) {
+        <div class="c-spinner"><div class="spinner"></div></div>
+      } @else if (groups().length === 0) {
+        <div class="cc-card c-empty">
+          <div class="c-empty-icon">👥</div>
+          <p>Aucun groupe trouvé. Soyez le premier à en créer un !</p>
+        </div>
+      } @else {
+        <div class="grp-grid">
+          @for (group of groups(); track group.id) {
+            <div class="grp-card">
+              <div class="grp-card-top">
+                <div class="grp-icon">{{ typeIcon(group.type) }}</div>
+                <div class="grp-info">
+                  <div class="grp-name">{{ group.name }}</div>
+                  @if (group.city || group.country) {
+                    <div class="grp-loc">📍 {{ group.city }}{{ group.city && group.country ? ', ' : '' }}{{ group.country }}</div>
+                  }
+                  <div class="grp-stats">👥 {{ group.members_count }} membres · 📝 {{ group.posts_count }} posts</div>
+                </div>
+              </div>
+              @if (group.description) {
+                <p class="grp-desc">{{ group.description }}</p>
+              }
+              <div class="grp-card-actions">
+                @if (auth.isLoggedIn()) {
+                  @if (group.is_member) {
+                    <button class="grp-btn-leave" (click)="leave(group)">Quitter</button>
+                  } @else {
+                    <button class="grp-btn-join" (click)="join(group)">+ Rejoindre</button>
+                  }
+                } @else {
+                  <span class="grp-btn-join" routerLink="/auth">+ Rejoindre</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+    </div>
+  </div>
 </div>

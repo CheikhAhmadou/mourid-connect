@@ -1,5 +1,5 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../../core/services/api';
 import { AuthService } from '../../../core/services/auth';
@@ -7,7 +7,7 @@ import { Group } from '../../../core/models/connect';
 
 @Component({
   selector: 'app-groupes',
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, RouterLinkActive, FormsModule],
   templateUrl: './groupes.html',
   styleUrl: './groupes.scss',
 })

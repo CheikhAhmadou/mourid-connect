@@ -1,12 +1,14 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { SlicePipe } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ApiService } from '../../../core/services/api';
 import { AuthService } from '../../../core/services/auth';
 import { ConnectEvent } from '../../../core/models/connect';
 
 @Component({
   selector: 'app-evenements',
-  imports: [FormsModule],
+  imports: [FormsModule, SlicePipe, RouterLink, RouterLinkActive],
   templateUrl: './evenements.html',
   styleUrl: './evenements.scss',
 })

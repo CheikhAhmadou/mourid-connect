@@ -1,12 +1,13 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ApiService } from '../../../core/services/api';
 import { AuthService } from '../../../core/services/auth';
 import { UserProfile } from '../../../core/models/connect';
 
 @Component({
   selector: 'app-carte',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink, RouterLinkActive],
   templateUrl: './carte.html',
   styleUrl: './carte.scss',
 })
@@ -69,6 +70,18 @@ export class Carte implements OnInit {
         this.members.update(ms => ms.map(m => m.id === member.id ? { ...m, is_following: true } : m));
       });
     }
+  }
+
+  avatarGrad(id: number): string {
+    const g = [
+      'linear-gradient(135deg,#2D6A4F,#40916C)',
+      'linear-gradient(135deg,#C9A84C,#E8C96A)',
+      'linear-gradient(135deg,#6D28D9,#8B5CF6)',
+      'linear-gradient(135deg,#0D9488,#14B8A6)',
+      'linear-gradient(135deg,#DC2626,#EF4444)',
+      'linear-gradient(135deg,#1D4ED8,#3B82F6)',
+    ];
+    return g[id % g.length];
   }
 
   countryFlag(code: string): string {

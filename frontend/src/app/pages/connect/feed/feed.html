@@ -1,143 +1,262 @@
-<div class="feed-page">
+<div class="c-wrap">
 
-  <!-- ── En-tête -->
-  <div class="feed-header">
-    <h1>Fil d'actualité</h1>
-    <p>Restez connecté avec la communauté mouride</p>
-  </div>
-
-  <div class="feed-layout">
-
-    <!-- ── Colonne principale -->
-    <div class="feed-main">
-
-      <!-- Zone de publication -->
-      @if (auth.isLoggedIn()) {
-        <div class="compose-card">
-          <div class="compose-top">
-            <div class="compose-avatar">{{ auth.currentUser()?.name?.charAt(0) }}</div>
-            <textarea
-              [(ngModel)]="content"
-              placeholder="Partagez quelque chose avec la communauté..."
-              rows="3"
-            ></textarea>
+  <!-- ── Sidebar ── -->
+  <aside class="c-sidebar">
+    <div class="cs-card">
+      <div class="cs-cover"><div class="cs-cover-pat"></div></div>
+      <div class="cs-info">
+        <div class="cs-av">{{ auth.currentUser()?.name?.charAt(0) || '🕌' }}</div>
+        @if (auth.isLoggedIn()) {
+          <div class="cs-name">{{ auth.currentUser()?.name }}</div>
+          <div class="cs-meta">Communauté mouride</div>
+          <div class="cs-stats">
+            <div><span class="cs-sv">—</span><span class="cs-sl">Abonnés</span></div>
+            <div><span class="cs-sv">—</span><span class="cs-sl">Suivi</span></div>
+            <div><span class="cs-sv">—</span><span class="cs-sl">Posts</span></div>
           </div>
-          <div class="compose-actions">
-            <label class="compose-media-btn" for="postImages">
-              📷 Photos
+        } @else {
+          <div class="cs-name">Visiteur</div>
+          <div class="cs-meta"><a routerLink="/auth" class="cs-login">Se connecter →</a></div>
+        }
+      </div>
+    </div>
+    <div class="cs-section">Navigation</div>
+    <a routerLink="/connect" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" class="cs-nav">
+      <span class="cs-icon">📝</span> Fil d'actualité
+    </a>
+    <a routerLink="/connect/membres" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">🗺️</span> Carte des membres
+    </a>
+    <a routerLink="/connect/groupes" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">👥</span> Groupes & Dahiras
+    </a>
+    <a routerLink="/connect/evenements" routerLinkActive="active" class="cs-nav">
+      <span class="cs-icon">📅</span> Événements
+    </a>
+  </aside>
+
+  <!-- ── Main ── -->
+  <div class="c-main">
+
+    <!-- ── Map column ── -->
+    <div class="feed-map-col">
+
+      <!-- World map card -->
+      <div class="cc-card">
+        <div class="cc-header">
+          <div class="cc-title">🗺️ Carte mondiale des mourides</div>
+          <div style="display:flex;gap:5px">
+            <span class="c-pill active" style="padding:3px 10px;font-size:10px">Tous</span>
+            <span class="c-pill" style="padding:3px 10px;font-size:10px">Europe</span>
+            <span class="c-pill" style="padding:3px 10px;font-size:10px">Afrique</span>
+          </div>
+        </div>
+        <div class="feed-map-body">
+          <div class="feed-map-grid"></div>
+          <div class="map-pin" style="left:28%;top:25%">
+            <div class="map-dot map-dot-lg">23k</div>
+            <div class="map-dot-lbl">🇫🇷 Paris</div>
+          </div>
+          <div class="map-pin" style="left:34%;top:35%">
+            <div class="map-dot map-dot-md">12k</div>
+            <div class="map-dot-lbl">🇮🇹 Rome</div>
+          </div>
+          <div class="map-pin" style="left:22%;top:22%">
+            <div class="map-dot map-dot-md">8k</div>
+            <div class="map-dot-lbl">🇬🇧 Londres</div>
+          </div>
+          <div class="map-pin" style="left:43%;top:20%">
+            <div class="map-dot map-dot-sm"></div>
+            <div class="map-dot-lbl">🇩🇪 Berlin</div>
+          </div>
+          <div class="map-pin" style="left:55%;top:55%">
+            <div class="map-dot map-dot-md">8.7k</div>
+            <div class="map-dot-lbl">🇸🇳 Dakar</div>
+          </div>
+          <div class="map-pin" style="left:59%;top:43%">
+            <div class="map-dot map-dot-sm"></div>
+            <div class="map-dot-lbl">🇲🇦 Casablanca</div>
+          </div>
+          <div class="map-pin" style="left:72%;top:34%">
+            <div class="map-dot map-dot-sm"></div>
+            <div class="map-dot-lbl">🇦🇪 Dubaï</div>
+          </div>
+          <div class="map-pin" style="left:13%;top:38%">
+            <div class="map-dot map-dot-md">9.2k</div>
+            <div class="map-dot-lbl">🇺🇸 New York</div>
+          </div>
+          <div class="feed-map-popup">
+            <div class="fmp-title">📍 Paris, France</div>
+            <div class="fmp-row">23 450 membres</div>
+            <div class="fmp-row">48 dahiras actives</div>
+            <a routerLink="/connect/membres" class="fmp-btn">Voir les membres →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="c-stats-row">
+        <div class="c-stat-card">
+          <div class="csv">89 430</div>
+          <div class="csl">Membres actifs</div>
+          <div class="csg">↑ +1 240 ce mois</div>
+        </div>
+        <div class="c-stat-card">
+          <div class="csv">34</div>
+          <div class="csl">Pays représentés</div>
+          <div class="csg">↑ +2 ce mois</div>
+        </div>
+        <div class="c-stat-card">
+          <div class="csv">1 247</div>
+          <div class="csl">Dahiras actives</div>
+          <div class="csg">↑ +23 ce mois</div>
+        </div>
+      </div>
+
+      <!-- Nearby members -->
+      <div class="cc-card">
+        <div class="cc-header">
+          <div class="cc-title">👥 Membres actifs</div>
+          <a routerLink="/connect/membres" class="cc-link">Voir tout →</a>
+        </div>
+        @if (nearbyMembers().length === 0) {
+          <div class="c-spinner"><div class="spinner"></div></div>
+        } @else {
+          @for (m of nearbyMembers(); track m.id) {
+            <div class="c-member-row">
+              <div class="cm-av" [style.background]="avatarGrad(m.id)">{{ initial(m.name) }}</div>
+              <div class="cm-info">
+                <div class="cm-name">{{ m.name }}</div>
+                <div class="cm-sub">
+                  @if (m.city) {📍 {{ m.city }}}@if (m.dahira_name) { · 🕌 {{ m.dahira_name }}}
+                </div>
+              </div>
+              <div class="cm-on"></div>
+              @if (auth.isLoggedIn()) {
+                <button class="c-follow-btn" [class.following]="m.is_following" (click)="followMember(m)">
+                  {{ m.is_following ? '✓ Suivi' : 'Suivre' }}
+                </button>
+              }
+            </div>
+          }
+        }
+      </div>
+
+    </div>
+
+    <!-- ── Feed column ── -->
+    <div class="feed-col">
+
+      <!-- Composer -->
+      @if (auth.isLoggedIn()) {
+        <div class="cc-card feed-composer">
+          <div class="fc-row">
+            <div class="fc-av">{{ auth.currentUser()?.name?.charAt(0) }}</div>
+            <textarea [(ngModel)]="content" placeholder="Quoi de neuf dans la communauté ?" rows="2"></textarea>
+          </div>
+          <div class="fc-actions">
+            <label class="fc-act" for="postImages">
+              📷 Photo
               <input type="file" id="postImages" multiple accept="image/*" (change)="onImages($event)" hidden>
             </label>
             @if (images.length > 0) {
-              <span class="media-count">{{ images.length }} photo(s)</span>
+              <span class="fc-count">{{ images.length }} photo(s)</span>
             }
-            <button class="btn-publish" (click)="publish()" [disabled]="posting() || (!content.trim() && images.length === 0)">
-              {{ posting() ? 'Publication...' : 'Publier' }}
+            <button class="fc-btn" (click)="publish()" [disabled]="posting() || (!content.trim() && images.length === 0)">
+              {{ posting() ? '...' : 'Publier' }}
             </button>
           </div>
         </div>
       }
 
-      <!-- Fil de posts -->
+      <!-- Posts -->
       @if (loading()) {
-        <div class="feed-loading">
-          <div class="spinner"></div>
-        </div>
+        <div class="c-spinner"><div class="spinner"></div></div>
       } @else if (posts().length === 0) {
-        <div class="feed-empty">
-          <span>🕌</span>
+        <div class="cc-card c-empty">
+          <div class="c-empty-icon">🕌</div>
           <p>Suivez des membres pour voir leurs publications ici.</p>
-          <a routerLink="/connect/membres" class="btn-explore">Explorer les membres →</a>
+          <a routerLink="/connect/membres" style="color:#1B4332;font-size:12px;text-decoration:none;margin-top:8px;display:block">Explorer les membres →</a>
         </div>
       } @else {
         @for (post of posts(); track post.id) {
-          <div class="post-card">
-
-            <!-- En-tête post -->
-            <div class="post-header">
-              <div class="post-avatar">
-                <img [src]="avatar(post.user.avatar)" [alt]="post.user.name">
-              </div>
-              <div class="post-meta">
-                <div class="post-author">{{ post.user.name }}</div>
-                @if (post.user.city) {
-                  <div class="post-location">📍 {{ post.user.city }}</div>
-                }
-                <div class="post-time">{{ post.created_at }}</div>
+          <div class="cc-card feed-post">
+            <div class="fp-header">
+              <div class="fp-av" [style.background]="avatarGrad(post.user.id)">{{ initial(post.user.name) }}</div>
+              <div class="fp-meta">
+                <div class="fp-name">{{ post.user.name }}</div>
+                <div class="fp-sub">
+                  @if (post.user.city) {📍 {{ post.user.city }} · }{{ post.created_at }}
+                </div>
               </div>
               @if (post.group) {
-                <div class="post-group-tag">{{ post.group.name }}</div>
+                <div class="fp-badge fp-badge-dahira">🕌 {{ post.group.name }}</div>
               }
             </div>
-
-            <!-- Contenu -->
             @if (post.content) {
-              <p class="post-content">{{ post.content }}</p>
+              <p class="fp-body">{{ post.content }}</p>
             }
-
-            <!-- Médias -->
             @if (post.media && post.media.length > 0) {
-              <div class="post-media {{ post.media.length > 1 ? 'grid-' + post.media.length : '' }}">
-                @for (m of post.media; track m.id) {
-                  <img [src]="m.url_thumbnail || m.url" [alt]="post.user.name">
-                }
+              <div class="fp-media">
+                <img [src]="post.media[0].url_thumbnail || post.media[0].url" [alt]="post.user.name">
               </div>
             }
-
-            <!-- Actions -->
-            <div class="post-actions">
-              <button class="action-btn {{ post.is_liked ? 'liked' : '' }}" (click)="like(post)">
+            <div class="fp-actions">
+              <button class="fpa" [class.fpa-liked]="post.is_liked" (click)="like(post)">
                 {{ post.is_liked ? '❤️' : '🤍' }} {{ post.likes_count }}
               </button>
-              <button class="action-btn" (click)="toggleComments(post.id)">
+              <button class="fpa" (click)="toggleComments(post.id)">
                 💬 {{ post.comments_count }}
               </button>
+              <button class="fpa">↗️ Partager</button>
             </div>
-
-            <!-- Commentaires -->
             @if (openComments() === post.id) {
-              <div class="comments-section">
+              <div class="fp-comments">
                 @if (auth.isLoggedIn()) {
-                  <div class="comment-compose">
-                    <input
-                      type="text"
+                  <div class="fpc-compose">
+                    <input type="text"
                       [ngModel]="commentText()[post.id] || ''"
                       (ngModelChange)="setComment(post.id, $event)"
-                      placeholder="Écrire un commentaire..."
-                      (keyup.enter)="sendComment(post)"
-                    >
+                      placeholder="Commentaire..."
+                      (keyup.enter)="sendComment(post)">
                     <button (click)="sendComment(post)">→</button>
                   </div>
                 }
-                @for (comment of post.comments; track comment.id) {
-                  <div class="comment-item">
-                    <div class="comment-avatar">{{ comment.user.name.charAt(0) }}</div>
-                    <div class="comment-body">
-                      <span class="comment-author">{{ comment.user.name }}</span>
-                      <span class="comment-text">{{ comment.content }}</span>
-                      <span class="comment-time">{{ comment.created_at }}</span>
+                @for (c of post.comments; track c.id) {
+                  <div class="fpc-item">
+                    <div class="fpc-av">{{ initial(c.user.name) }}</div>
+                    <div class="fpc-body">
+                      <span class="fpc-author">{{ c.user.name }}</span>
+                      <span class="fpc-text">{{ c.content }}</span>
                     </div>
                   </div>
                 }
               </div>
             }
-
           </div>
         }
       }
-    </div>
 
-    <!-- ── Sidebar -->
-    <div class="feed-sidebar">
-      <div class="sidebar-card">
-        <h3>Explorer</h3>
-        <nav class="connect-nav">
-          <a routerLink="/connect" class="connect-nav-item active">🏠 Fil d'actualité</a>
-          <a routerLink="/connect/groupes" class="connect-nav-item">👥 Groupes & Dahiras</a>
-          <a routerLink="/connect/evenements" class="connect-nav-item">📅 Événements</a>
-          <a routerLink="/connect/membres" class="connect-nav-item">🗺️ Carte des membres</a>
-        </nav>
-      </div>
-    </div>
+      <!-- Notifications -->
+      @if (auth.isLoggedIn() && notifs().length > 0) {
+        <div class="cc-card">
+          <div class="cc-header">
+            <div class="cc-title">🔔 Notifications</div>
+            <span class="cc-link" (click)="markAllRead()">Tout lire</span>
+          </div>
+          @for (n of notifs(); track n.id) {
+            <div class="fn-item" [class.fn-unread]="!n.is_read">
+              <div class="fn-av">🔔</div>
+              <div class="fn-content">
+                <div class="fn-body">{{ n.body || n.title }}</div>
+                <div class="fn-time">{{ n.created_at }}</div>
+              </div>
+              @if (!n.is_read) { <div class="fn-dot"></div> }
+            </div>
+          }
+        </div>
+      }
 
+    </div>
   </div>
 </div>
