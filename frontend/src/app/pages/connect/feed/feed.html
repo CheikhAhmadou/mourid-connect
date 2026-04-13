@@ -1,0 +1,143 @@
+<div class="feed-page">
+
+  <!-- ── En-tête -->
+  <div class="feed-header">
+    <h1>Fil d'actualité</h1>
+    <p>Restez connecté avec la communauté mouride</p>
+  </div>
+
+  <div class="feed-layout">
+
+    <!-- ── Colonne principale -->
+    <div class="feed-main">
+
+      <!-- Zone de publication -->
+      @if (auth.isLoggedIn()) {
+        <div class="compose-card">
+          <div class="compose-top">
+            <div class="compose-avatar">{{ auth.currentUser()?.name?.charAt(0) }}</div>
+            <textarea
+              [(ngModel)]="content"
+              placeholder="Partagez quelque chose avec la communauté..."
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="compose-actions">
+            <label class="compose-media-btn" for="postImages">
+              📷 Photos
+              <input type="file" id="postImages" multiple accept="image/*" (change)="onImages($event)" hidden>
+            </label>
+            @if (images.length > 0) {
+              <span class="media-count">{{ images.length }} photo(s)</span>
+            }
+            <button class="btn-publish" (click)="publish()" [disabled]="posting() || (!content.trim() && images.length === 0)">
+              {{ posting() ? 'Publication...' : 'Publier' }}
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Fil de posts -->
+      @if (loading()) {
+        <div class="feed-loading">
+          <div class="spinner"></div>
+        </div>
+      } @else if (posts().length === 0) {
+        <div class="feed-empty">
+          <span>🕌</span>
+          <p>Suivez des membres pour voir leurs publications ici.</p>
+          <a routerLink="/connect/membres" class="btn-explore">Explorer les membres →</a>
+        </div>
+      } @else {
+        @for (post of posts(); track post.id) {
+          <div class="post-card">
+
+            <!-- En-tête post -->
+            <div class="post-header">
+              <div class="post-avatar">
+                <img [src]="avatar(post.user.avatar)" [alt]="post.user.name">
+              </div>
+              <div class="post-meta">
+                <div class="post-author">{{ post.user.name }}</div>
+                @if (post.user.city) {
+                  <div class="post-location">📍 {{ post.user.city }}</div>
+                }
+                <div class="post-time">{{ post.created_at }}</div>
+              </div>
+              @if (post.group) {
+                <div class="post-group-tag">{{ post.group.name }}</div>
+              }
+            </div>
+
+            <!-- Contenu -->
+            @if (post.content) {
+              <p class="post-content">{{ post.content }}</p>
+            }
+
+            <!-- Médias -->
+            @if (post.media && post.media.length > 0) {
+              <div class="post-media {{ post.media.length > 1 ? 'grid-' + post.media.length : '' }}">
+                @for (m of post.media; track m.id) {
+                  <img [src]="m.url_thumbnail || m.url" [alt]="post.user.name">
+                }
+              </div>
+            }
+
+            <!-- Actions -->
+            <div class="post-actions">
+              <button class="action-btn {{ post.is_liked ? 'liked' : '' }}" (click)="like(post)">
+                {{ post.is_liked ? '❤️' : '🤍' }} {{ post.likes_count }}
+              </button>
+              <button class="action-btn" (click)="toggleComments(post.id)">
+                💬 {{ post.comments_count }}
+              </button>
+            </div>
+
+            <!-- Commentaires -->
+            @if (openComments() === post.id) {
+              <div class="comments-section">
+                @if (auth.isLoggedIn()) {
+                  <div class="comment-compose">
+                    <input
+                      type="text"
+                      [ngModel]="commentText()[post.id] || ''"
+                      (ngModelChange)="setComment(post.id, $event)"
+                      placeholder="Écrire un commentaire..."
+                      (keyup.enter)="sendComment(post)"
+                    >
+                    <button (click)="sendComment(post)">→</button>
+                  </div>
+                }
+                @for (comment of post.comments; track comment.id) {
+                  <div class="comment-item">
+                    <div class="comment-avatar">{{ comment.user.name.charAt(0) }}</div>
+                    <div class="comment-body">
+                      <span class="comment-author">{{ comment.user.name }}</span>
+                      <span class="comment-text">{{ comment.content }}</span>
+                      <span class="comment-time">{{ comment.created_at }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+
+          </div>
+        }
+      }
+    </div>
+
+    <!-- ── Sidebar -->
+    <div class="feed-sidebar">
+      <div class="sidebar-card">
+        <h3>Explorer</h3>
+        <nav class="connect-nav">
+          <a routerLink="/connect" class="connect-nav-item active">🏠 Fil d'actualité</a>
+          <a routerLink="/connect/groupes" class="connect-nav-item">👥 Groupes & Dahiras</a>
+          <a routerLink="/connect/evenements" class="connect-nav-item">📅 Événements</a>
+          <a routerLink="/connect/membres" class="connect-nav-item">🗺️ Carte des membres</a>
+        </nav>
+      </div>
+    </div>
+
+  </div>
+</div>

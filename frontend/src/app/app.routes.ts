@@ -25,5 +25,22 @@ export const routes: Routes = [
     path: 'souk/produits/:slug',
     loadComponent: () => import('./pages/souk/product-detail/product-detail').then(m => m.ProductDetail),
   },
+  // ── Connect
+  {
+    path: 'connect',
+    loadComponent: () => import('./pages/connect/feed/feed').then(m => m.Feed),
+  },
+  {
+    path: 'connect/groupes',
+    loadComponent: () => import('./pages/connect/groupes/groupes').then(m => m.Groupes),
+  },
+  {
+    path: 'connect/evenements',
+    loadComponent: () => import('./pages/connect/evenements/evenements').then(m => m.Evenements),
+  },
+  {
+    path: 'connect/membres',
+    loadComponent: () => import('./pages/connect/carte/carte').then(m => m.Carte),
+  },
   { path: '**', redirectTo: '' },
 ];
