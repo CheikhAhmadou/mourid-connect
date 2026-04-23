@@ -1,17 +1,10 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  {
-    path: '',
-    loadComponent: () => import('./pages/home/home').then(m => m.Home),
-  },
+  { path: '', redirectTo: 'souk', pathMatch: 'full' },
   {
     path: 'auth',
     loadComponent: () => import('./pages/auth/auth').then(m => m.AuthPage),
-  },
-  {
-    path: 'dashboard',
-    loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard),
   },
   {
     path: 'souk',
@@ -25,7 +18,6 @@ export const routes: Routes = [
     path: 'souk/produits/:slug',
     loadComponent: () => import('./pages/souk/product-detail/product-detail').then(m => m.ProductDetail),
   },
-  // ── Connect
   {
     path: 'connect',
     loadComponent: () => import('./pages/connect/feed/feed').then(m => m.Feed),
@@ -42,5 +34,5 @@ export const routes: Routes = [
     path: 'connect/membres',
     loadComponent: () => import('./pages/connect/carte/carte').then(m => m.Carte),
   },
-  { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: 'souk' },
 ];

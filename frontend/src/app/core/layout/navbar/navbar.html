@@ -1,20 +1,17 @@
 <nav>
-  <div class="nav-logo" routerLink="/">
+  <div class="nav-logo" routerLink="/souk">
     <div class="nav-logo-icon">🕌</div>
     <div class="nav-logo-text">Mourid<span>Connect</span></div>
   </div>
 
   <ul class="nav-links">
-    <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Accueil</a></li>
     <li><a routerLink="/souk" routerLinkActive="active">Souk</a></li>
     <li><a routerLink="/connect" routerLinkActive="active">Connect</a></li>
-    <li><a href="#">Académie</a></li>
-    <li><a href="#">Kids</a></li>
   </ul>
 
   <div class="nav-cta">
     @if (auth.isLoggedIn()) {
-      <a class="nav-dashboard" routerLink="/dashboard">
+      <a class="nav-dashboard" routerLink="/auth">
         <span class="nav-avatar">{{ auth.currentUser()?.name?.charAt(0) }}</span>
         Mon espace
       </a>
