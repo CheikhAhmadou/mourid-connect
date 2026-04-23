@@ -10,16 +10,16 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/auth/auth').then(m => m.AuthPage),
   },
   {
-    path: 'souk',
-    loadComponent: () => import('./pages/souk/souk-list/souk-list').then(m => m.SoukList),
+    path: 'market',
+    loadComponent: () => import('./pages/market/souk-list/souk-list').then(m => m.SoukList),
   },
   {
-    path: 'souk/boutiques/:slug',
-    loadComponent: () => import('./pages/souk/shop-detail/shop-detail').then(m => m.ShopDetail),
+    path: 'market/boutiques/:slug',
+    loadComponent: () => import('./pages/market/shop-detail/shop-detail').then(m => m.ShopDetail),
   },
   {
-    path: 'souk/produits/:slug',
-    loadComponent: () => import('./pages/souk/product-detail/product-detail').then(m => m.ProductDetail),
+    path: 'market/produits/:slug',
+    loadComponent: () => import('./pages/market/product-detail/product-detail').then(m => m.ProductDetail),
   },
   {
     path: 'connect',

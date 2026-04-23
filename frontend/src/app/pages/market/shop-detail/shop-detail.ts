@@ -32,7 +32,7 @@ export class ShopDetail implements OnInit {
   whatsappContact(shop: Shop) {
     const phone = shop.whatsapp ?? shop.phone;
     if (phone) {
-      const msg = encodeURIComponent(`Bonjour, je vous contacte depuis Souk Mouride.`);
+      const msg = encodeURIComponent(`Bonjour, je vous contacte depuis Market Mouride.`);
       window.open(`https://wa.me/${phone.replace(/\s+/g, '')}?text=${msg}`, '_blank');
     }
   }

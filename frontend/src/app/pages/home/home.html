@@ -8,7 +8,7 @@
     <h1>Une seule app.<br><span>Toute la</span><br>communauté.</h1>
     <p>Mourid Connect relie chaque fidèle mouride où qu'il soit dans le monde — réseau social et marketplace communautaire.</p>
     <div class="hero-actions">
-      <button class="btn-hero" routerLink="/souk">Explorer le Souk</button>
+      <button class="btn-hero" routerLink="/market">Explorer le Market</button>
       <button class="btn-hero-ghost" routerLink="/connect">Rejoindre Connect</button>
     </div>
     <div class="hero-stats">
@@ -26,7 +26,7 @@
       </div>
       <div class="mockup-tabs">
         <div class="mockup-tab active">🌍 Connect</div>
-        <div class="mockup-tab">🏪 Souk</div>
+        <div class="mockup-tab">🏪 Market</div>
       </div>
       <div class="mockup-body">
         <div class="mockup-section-title">Actualités de votre communauté</div>
@@ -42,7 +42,7 @@
         <div class="mockup-card">
           <div class="mockup-card-header">
             <div class="mockup-avatar gold">S</div>
-            <div><div class="mockup-card-name">Souk Mouride</div><div class="mockup-card-sub">🛍️ Nouveau produit</div></div>
+            <div><div class="mockup-card-name">Market Mouride</div><div class="mockup-card-sub">🛍️ Nouveau produit</div></div>
           </div>
           <div class="mockup-card-text">Café Touba Premium 500g — 3 500 FCFA / 5,33€</div>
           <span class="mockup-badge gold">⭐ 4.9/5 — Vendeur vérifié</span>
@@ -50,7 +50,7 @@
       </div>
       <div class="mockup-bottomnav">
         <div class="mockup-nav-item active"><div class="mockup-nav-icon">🌍</div><div class="mockup-nav-label">Connect</div></div>
-        <div class="mockup-nav-item"><div class="mockup-nav-icon">🏪</div><div class="mockup-nav-label">Souk</div></div>
+        <div class="mockup-nav-item"><div class="mockup-nav-icon">🏪</div><div class="mockup-nav-label">Market</div></div>
         <div class="mockup-nav-item"><div class="mockup-nav-icon">👤</div><div class="mockup-nav-label">Profil</div></div>
       </div>
     </div>
@@ -60,13 +60,13 @@
 <!-- SOUK -->
 <section class="souk-section">
   <div class="section-header">
-    <div class="section-eyebrow">Souk Mouride</div>
+    <div class="section-eyebrow">Market Mouride</div>
     <h2 class="section-title">L'économie mouride<br>enfin numérisée</h2>
     <p class="section-subtitle">Trouve et expose tes produits & services auprès de toute la communauté mondiale. Contact direct — zéro commission.</p>
   </div>
   <div class="souk-grid">
     @for (product of featuredProducts(); track product.id) {
-      <div class="souk-card" [routerLink]="['/souk/produits', product.slug]">
+      <div class="souk-card" [routerLink]="['/market/produits', product.slug]">
         <div class="souk-img {{ getColorClass(product) }}">
           @if (product.main_image) {
             <img [src]="product.main_image.url_thumbnail" [alt]="product.name">
@@ -91,7 +91,7 @@
     }
   </div>
   <div class="souk-cta">
-    <button class="btn-solid" routerLink="/souk">Voir tous les produits →</button>
+    <button class="btn-solid" routerLink="/market">Voir tous les produits →</button>
   </div>
 </section>
 
@@ -137,6 +137,6 @@
   <p class="section-subtitle">89 430 mourides dans 34 pays nous font déjà confiance. Inscrivez-vous dès aujourd'hui — c'est gratuit.</p>
   <div class="cta-actions">
     <button class="btn-hero" routerLink="/auth">Créer mon compte</button>
-    <button class="btn-hero-ghost" routerLink="/souk">Explorer le Souk</button>
+    <button class="btn-hero-ghost" routerLink="/market">Explorer le Market</button>
   </div>
 </section>

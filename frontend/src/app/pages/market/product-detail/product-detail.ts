@@ -36,7 +36,7 @@ export class ProductDetail implements OnInit {
   whatsappContact(product: Product) {
     const phone = product.shop?.whatsapp ?? product.shop?.phone;
     if (phone) {
-      const msg = encodeURIComponent(`Bonjour, je suis intéressé par votre produit "${product.name}" sur Souk Mouride.`);
+      const msg = encodeURIComponent(`Bonjour, je suis intéressé par votre produit "${product.name}" sur Market Mouride.`);
       window.open(`https://wa.me/${phone.replace(/\s+/g, '')}?text=${msg}`, '_blank');
     }
   }

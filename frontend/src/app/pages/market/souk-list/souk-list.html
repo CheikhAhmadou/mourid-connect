@@ -3,7 +3,7 @@
   <!-- ── Header ── -->
   <div class="souk-header">
     <div class="souk-header-content">
-      <div class="section-eyebrow">Souk Mouride</div>
+      <div class="section-eyebrow">Market Mouride</div>
       <h1 class="section-title">L'annuaire des<br>entrepreneurs mourides</h1>
       <p class="section-subtitle">Trouve ce dont tu as besoin auprès des entrepreneurs de la communauté, partout dans le monde.</p>
 
@@ -81,7 +81,7 @@
           <!-- Grille produits de cette section (max 4) -->
           <div class="products-grid">
             @for (product of section.products.slice(0, 4); track trackProduct($index, product)) {
-              <div class="product-card" [routerLink]="['/souk/produits', product.slug]">
+              <div class="product-card" [routerLink]="['/market/produits', product.slug]">
                 <div class="product-img {{ getColorClass(product) }}">
                   @if (product.main_image) {
                     <img [src]="product.main_image.url_thumbnail" [alt]="product.name">
@@ -160,7 +160,7 @@
       } @else {
         <div class="products-grid">
           @for (product of products(); track trackProduct($index, product)) {
-            <div class="product-card" [routerLink]="['/souk/produits', product.slug]">
+            <div class="product-card" [routerLink]="['/market/produits', product.slug]">
               <div class="product-img {{ getColorClass(product) }}">
                 @if (product.main_image) {
                   <img [src]="product.main_image.url_thumbnail" [alt]="product.name">

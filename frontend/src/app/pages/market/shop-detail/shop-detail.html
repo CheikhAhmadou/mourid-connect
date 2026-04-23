@@ -67,7 +67,7 @@
             @if (s.products && s.products.length > 0) {
               <div class="products-mini-grid">
                 @for (p of s.products; track p.id) {
-                  <div class="mini-card" [routerLink]="['/souk/produits', p.slug]">
+                  <div class="mini-card" [routerLink]="['/market/produits', p.slug]">
                     <div class="mini-img">
                       @if (p.main_image) {
                         <img [src]="p.main_image.url_thumbnail" [alt]="p.name">

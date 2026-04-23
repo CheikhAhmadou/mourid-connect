@@ -10,7 +10,7 @@
     <div class="breadcrumb">
       <a routerLink="/">Accueil</a>
       <span>›</span>
-      <a routerLink="/souk">Souk Mouride</a>
+      <a routerLink="/market">Market Mouride</a>
       @if (p.category?.parent) {
         <span>›</span>
         <span>{{ p.category!.parent!.icon }} {{ p.category!.parent!.name }}</span>
@@ -232,7 +232,7 @@
               }
             </div>
 
-            <a class="see-shop-btn" [routerLink]="['/souk/boutiques', p.shop?.slug]">
+            <a class="see-shop-btn" [routerLink]="['/market/boutiques', p.shop?.slug]">
               Voir la boutique complète →
             </a>
           </div>
