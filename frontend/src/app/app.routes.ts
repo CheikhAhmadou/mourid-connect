@@ -1,7 +1,10 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'souk', pathMatch: 'full' },
+  {
+    path: '',
+    loadComponent: () => import('./pages/home/home').then(m => m.Home),
+  },
   {
     path: 'auth',
     loadComponent: () => import('./pages/auth/auth').then(m => m.AuthPage),
@@ -34,5 +37,5 @@ export const routes: Routes = [
     path: 'connect/membres',
     loadComponent: () => import('./pages/connect/carte/carte').then(m => m.Carte),
   },
-  { path: '**', redirectTo: 'souk' },
+  { path: '**', redirectTo: '' },
 ];

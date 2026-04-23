@@ -1,0 +1,142 @@
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Plateforme de la communauté mouride mondiale
+    </div>
+    <h1>Une seule app.<br><span>Toute la</span><br>communauté.</h1>
+    <p>Mourid Connect relie chaque fidèle mouride où qu'il soit dans le monde — réseau social et marketplace communautaire.</p>
+    <div class="hero-actions">
+      <button class="btn-hero" routerLink="/souk">Explorer le Souk</button>
+      <button class="btn-hero-ghost" routerLink="/connect">Rejoindre Connect</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">34</div><div class="hero-stat-label">Pays représentés</div></div>
+      <div><div class="hero-stat-num">1 247</div><div class="hero-stat-label">Dahiras enregistrées</div></div>
+      <div><div class="hero-stat-num">89K+</div><div class="hero-stat-label">Membres actifs</div></div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="app-mockup">
+      <div class="mockup-topbar">
+        <div class="mockup-logo">Mourid<span>Connect</span></div>
+        <div class="mockup-notif">🔔</div>
+      </div>
+      <div class="mockup-tabs">
+        <div class="mockup-tab active">🌍 Connect</div>
+        <div class="mockup-tab">🏪 Souk</div>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-section-title">Actualités de votre communauté</div>
+        <div class="mockup-card">
+          <div class="mockup-card-header">
+            <div class="mockup-avatar">F</div>
+            <div><div class="mockup-card-name">Fatou Mbaye</div><div class="mockup-card-sub">📍 Paris, France · il y a 2h</div></div>
+          </div>
+          <div class="mockup-card-text">Alhamdulillah ! Nous avons atteint notre objectif pour le Grand Magal 2025 🕌</div>
+          <span class="mockup-badge green">✅ Magal 2025</span>
+          <div class="mockup-progress"><div class="mockup-progress-bar" style="width:96%"></div></div>
+        </div>
+        <div class="mockup-card">
+          <div class="mockup-card-header">
+            <div class="mockup-avatar gold">S</div>
+            <div><div class="mockup-card-name">Souk Mouride</div><div class="mockup-card-sub">🛍️ Nouveau produit</div></div>
+          </div>
+          <div class="mockup-card-text">Café Touba Premium 500g — 3 500 FCFA / 5,33€</div>
+          <span class="mockup-badge gold">⭐ 4.9/5 — Vendeur vérifié</span>
+        </div>
+      </div>
+      <div class="mockup-bottomnav">
+        <div class="mockup-nav-item active"><div class="mockup-nav-icon">🌍</div><div class="mockup-nav-label">Connect</div></div>
+        <div class="mockup-nav-item"><div class="mockup-nav-icon">🏪</div><div class="mockup-nav-label">Souk</div></div>
+        <div class="mockup-nav-item"><div class="mockup-nav-icon">👤</div><div class="mockup-nav-label">Profil</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOUK -->
+<section class="souk-section">
+  <div class="section-header">
+    <div class="section-eyebrow">Souk Mouride</div>
+    <h2 class="section-title">L'économie mouride<br>enfin numérisée</h2>
+    <p class="section-subtitle">Trouve et expose tes produits & services auprès de toute la communauté mondiale. Contact direct — zéro commission.</p>
+  </div>
+  <div class="souk-grid">
+    @for (product of featuredProducts(); track product.id) {
+      <div class="souk-card" [routerLink]="['/souk/produits', product.slug]">
+        <div class="souk-img {{ getColorClass(product) }}">
+          @if (product.main_image) {
+            <img [src]="product.main_image.url_thumbnail" [alt]="product.name">
+          } @else {
+            <span>🛍️</span>
+          }
+        </div>
+        <div class="souk-info">
+          <div class="souk-name">{{ product.name }}</div>
+          <div class="souk-seller">{{ product.shop?.name }} · {{ product.shop?.city }}</div>
+          <div class="souk-bottom">
+            <div class="souk-price">{{ product.price_eur | number:'1.2-2' }} €</div>
+            <div>
+              <div class="souk-rating">⭐ {{ product.average_rating }}</div>
+              @if (product.shop?.is_verified) {
+                <div class="souk-verified">✅ Vérifié</div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="souk-cta">
+    <button class="btn-solid" routerLink="/souk">Voir tous les produits →</button>
+  </div>
+</section>
+
+<!-- CONNECT -->
+<section class="connect-section">
+  <div class="section-header">
+    <div class="section-eyebrow">Connect</div>
+    <h2 class="section-title">Le réseau social<br>de la communauté mouride</h2>
+    <p class="section-subtitle">Échange, partage, rejoins des groupes et trouve des mourides partout dans le monde.</p>
+  </div>
+  <div class="connect-grid">
+    <div class="connect-card">
+      <div class="connect-icon">📰</div>
+      <div class="connect-title">Fil d'actualité</div>
+      <p class="connect-desc">Suis les publications de ta communauté, commente et partage.</p>
+      <a class="connect-link" routerLink="/connect">Accéder →</a>
+    </div>
+    <div class="connect-card">
+      <div class="connect-icon">👥</div>
+      <div class="connect-title">Groupes</div>
+      <p class="connect-desc">Rejoins des dahiras, groupes de villes et cercles thématiques.</p>
+      <a class="connect-link" routerLink="/connect/groupes">Accéder →</a>
+    </div>
+    <div class="connect-card">
+      <div class="connect-icon">📅</div>
+      <div class="connect-title">Événements</div>
+      <p class="connect-desc">Découvre et participe aux événements mourides dans ton pays.</p>
+      <a class="connect-link" routerLink="/connect/evenements">Accéder →</a>
+    </div>
+    <div class="connect-card">
+      <div class="connect-icon">🌍</div>
+      <div class="connect-title">Carte des membres</div>
+      <p class="connect-desc">Visualise la communauté mouride mondiale sur une carte interactive.</p>
+      <a class="connect-link" routerLink="/connect/membres">Accéder →</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-eyebrow">Rejoignez-nous</div>
+  <h2 class="section-title">La communauté vous attend</h2>
+  <p class="section-subtitle">89 430 mourides dans 34 pays nous font déjà confiance. Inscrivez-vous dès aujourd'hui — c'est gratuit.</p>
+  <div class="cta-actions">
+    <button class="btn-hero" routerLink="/auth">Créer mon compte</button>
+    <button class="btn-hero-ghost" routerLink="/souk">Explorer le Souk</button>
+  </div>
+</section>
